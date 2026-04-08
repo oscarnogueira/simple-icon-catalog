@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1620"
-   version = "1.7">
+   LastUpgradeVersion = "1500"
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "547895916F4DD346E30422FF"
-               BuildableName = "IconViewer.app"
+               BuildableName = "Icon Viewer.app"
                BlueprintName = "IconViewer"
                ReferencedContainer = "container:IconViewer.xcodeproj">
             </BuildableReference>
@@ -41,9 +41,19 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "547895916F4DD346E30422FF"
+            BuildableName = "Icon Viewer.app"
+            BlueprintName = "IconViewer"
+            ReferencedContainer = "container:IconViewer.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CDBE6B3A397676FACC5FC979"
@@ -69,7 +79,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "547895916F4DD346E30422FF"
-            BuildableName = "IconViewer.app"
+            BuildableName = "Icon Viewer.app"
             BlueprintName = "IconViewer"
             ReferencedContainer = "container:IconViewer.xcodeproj">
          </BuildableReference>
@@ -86,7 +96,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "547895916F4DD346E30422FF"
-            BuildableName = "IconViewer.app"
+            BuildableName = "Icon Viewer.app"
             BlueprintName = "IconViewer"
             ReferencedContainer = "container:IconViewer.xcodeproj">
          </BuildableReference>

@@ -80,6 +80,7 @@ struct ContentView: View {
         }
         .onAppear {
             viewModel.startIndexing()
+            viewModel.startWatching()
         }
     }
 

@@ -15,6 +15,8 @@ class IconCatalogViewModel: ObservableObject {
 
     private let indexer: IconIndexer
     let cache: ThumbnailCache
+    private var directoryWatcher: DirectoryWatcher?
+    private var debounceTask: Task<Void, Never>?
 
     var filteredIcons: [IconItem] {
         let active = allIcons.filter { !$0.isQuarantined }
@@ -73,6 +75,7 @@ class IconCatalogViewModel: ObservableObject {
         dirs.append(url)
         sourceDirectories = dirs
         startIndexing()
+        startWatching()
     }
 
     func removeDirectory(_ url: URL) {
@@ -89,5 +92,21 @@ class IconCatalogViewModel: ObservableObject {
 
     func clearCache() throws {
         try cache.clear()
+    }
+
+    func startWatching() {
+        directoryWatcher = DirectoryWatcher { [weak self] in
+            self?.debouncedReindex()
+        }
+        directoryWatcher?.watch(directories: sourceDirectories)
+    }
+
+    private func debouncedReindex() {
+        debounceTask?.cancel()
+        debounceTask = Task {
+            try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled else { return }
+            startIndexing()
+        }
     }
 }
