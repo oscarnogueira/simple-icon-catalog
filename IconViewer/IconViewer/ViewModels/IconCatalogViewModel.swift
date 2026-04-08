@@ -8,11 +8,18 @@ enum StyleFilter: String, CaseIterable {
     case monochrome = "Mono"
 }
 
+enum FormatFilter: String, CaseIterable {
+    case all = "All"
+    case svg = "SVG"
+    case png = "PNG"
+}
+
 @MainActor
 class IconCatalogViewModel: ObservableObject {
     @Published var allIcons: [IconItem] = []
     @Published var searchText: String = ""
     @Published var styleFilter: StyleFilter = .all
+    @Published var formatFilter: FormatFilter = .all
     @Published var thumbnailSize: CGFloat = 64
     @Published var progress = IndexingProgress()
     @Published var lastIndexedAt: Date?
@@ -31,6 +38,11 @@ class IconCatalogViewModel: ObservableObject {
         case .all: break
         case .color: result = result.filter { !$0.isMonochrome }
         case .monochrome: result = result.filter { $0.isMonochrome }
+        }
+        switch formatFilter {
+        case .all: break
+        case .svg: result = result.filter { $0.fileExtension == "svg" }
+        case .png: result = result.filter { $0.fileExtension == "png" }
         }
         if !searchText.isEmpty {
             result = result.filter {

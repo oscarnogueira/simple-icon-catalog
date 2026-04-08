@@ -64,6 +64,15 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                     .frame(width: 130)
 
+                    // Format filter
+                    Picker("", selection: $viewModel.formatFilter) {
+                        ForEach(FormatFilter.allCases, id: \.self) { filter in
+                            Text(filter.rawValue).tag(filter)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 120)
+
                     // Size slider
                     HStack(spacing: 4) {
                         Image(systemName: "square.grid.3x3")
