@@ -12,6 +12,11 @@
 		A1B2C3D4E5F60003ABCD0001 /* DirectoryScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60004ABCD0001 /* DirectoryScannerTests.swift */; };
 		A1B2C3D4E5F60006ABCD0001 /* SVGAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60007ABCD0001 /* SVGAnalyzer.swift */; };
 		A1B2C3D4E5F60008ABCD0001 /* SVGAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60009ABCD0001 /* SVGAnalyzerTests.swift */; };
+		A1B2C3D4E5F60010ABCD0001 /* QuarantineClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60011ABCD0001 /* QuarantineClassifier.swift */; };
+		A1B2C3D4E5F60012ABCD0001 /* QuarantineClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60013ABCD0001 /* QuarantineClassifierTests.swift */; };
+		A1B2C3D4E5F60017ABCD0001 /* QuarantineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60014ABCD0001 /* QuarantineReason.swift */; };
+		A1B2C3D4E5F60018ABCD0001 /* IconItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60015ABCD0001 /* IconItem.swift */; };
+		A1B2C3D4E5F60019ABCD0001 /* IndexingProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60016ABCD0001 /* IndexingProgress.swift */; };
 		C24C86369999572E7865C5D1 /* IconViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B838486AA469913B9E79A6 /* IconViewerApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +37,11 @@
 		A1B2C3D4E5F60004ABCD0001 /* DirectoryScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryScannerTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60007ABCD0001 /* SVGAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAnalyzer.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60009ABCD0001 /* SVGAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAnalyzerTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60011ABCD0001 /* QuarantineClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifier.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60013ABCD0001 /* QuarantineClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifierTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60014ABCD0001 /* QuarantineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineReason.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60015ABCD0001 /* IconItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconItem.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60016ABCD0001 /* IndexingProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexingProgress.swift; sourceTree = "<group>"; };
 		D7B838486AA469913B9E79A6 /* IconViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewerApp.swift; sourceTree = "<group>"; };
 		E4F4D33270912CA607307B35 /* IconViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IconViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -43,8 +53,19 @@
 				D7B838486AA469913B9E79A6 /* IconViewerApp.swift */,
 				DFCFC5FC4B3EE78C880ADA59 /* Views */,
 				A1B2C3D4E5F60005ABCD0001 /* Services */,
+				A1B2C3D4E5F60020ABCD0001 /* Models */,
 			);
 			path = IconViewer;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F60020ABCD0001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60014ABCD0001 /* QuarantineReason.swift */,
+				A1B2C3D4E5F60015ABCD0001 /* IconItem.swift */,
+				A1B2C3D4E5F60016ABCD0001 /* IndexingProgress.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		A1B2C3D4E5F60005ABCD0001 /* Services */ = {
@@ -52,6 +73,7 @@
 			children = (
 				A1B2C3D4E5F60002ABCD0001 /* DirectoryScanner.swift */,
 				A1B2C3D4E5F60007ABCD0001 /* SVGAnalyzer.swift */,
+				A1B2C3D4E5F60011ABCD0001 /* QuarantineClassifier.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -70,6 +92,7 @@
 			children = (
 				A1B2C3D4E5F60004ABCD0001 /* DirectoryScannerTests.swift */,
 				A1B2C3D4E5F60009ABCD0001 /* SVGAnalyzerTests.swift */,
+				A1B2C3D4E5F60013ABCD0001 /* QuarantineClassifierTests.swift */,
 			);
 			path = IconViewerTests;
 			sourceTree = "<group>";
@@ -167,6 +190,7 @@
 			files = (
 				A1B2C3D4E5F60003ABCD0001 /* DirectoryScannerTests.swift in Sources */,
 				A1B2C3D4E5F60008ABCD0001 /* SVGAnalyzerTests.swift in Sources */,
+				A1B2C3D4E5F60012ABCD0001 /* QuarantineClassifierTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +202,10 @@
 				C24C86369999572E7865C5D1 /* IconViewerApp.swift in Sources */,
 				A1B2C3D4E5F60001ABCD0001 /* DirectoryScanner.swift in Sources */,
 				A1B2C3D4E5F60006ABCD0001 /* SVGAnalyzer.swift in Sources */,
+				A1B2C3D4E5F60010ABCD0001 /* QuarantineClassifier.swift in Sources */,
+				A1B2C3D4E5F60017ABCD0001 /* QuarantineReason.swift in Sources */,
+				A1B2C3D4E5F60018ABCD0001 /* IconItem.swift in Sources */,
+				A1B2C3D4E5F60019ABCD0001 /* IndexingProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
