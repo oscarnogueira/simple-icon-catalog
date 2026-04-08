@@ -20,9 +20,7 @@ struct ContentView: View {
 
             // Footer
             HStack(spacing: 8) {
-                Button {
-                    NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-                } label: {
+                SettingsLink {
                     Image(systemName: "gearshape")
                         .font(.caption)
                         .foregroundStyle(.secondary)
