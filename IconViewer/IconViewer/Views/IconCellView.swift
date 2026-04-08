@@ -16,9 +16,7 @@ struct IconCellView: View {
                           : Color.black.opacity(0.03))
                     .shadow(color: .black.opacity(0.1), radius: 2, y: 1)
 
-                thumbnailImage
-                    .resizable()
-                    .scaledToFit()
+                iconView
                     .padding(thumbnailSize * 0.15)
             }
             .frame(width: thumbnailSize, height: thumbnailSize)
@@ -44,6 +42,20 @@ struct IconCellView: View {
     }
 
     @State private var isHovering = false
+
+    @ViewBuilder
+    private var iconView: some View {
+        if item.isMonochrome {
+            thumbnailImage
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(colorScheme == .dark ? .white : .black)
+        } else {
+            thumbnailImage
+                .resizable()
+                .scaledToFit()
+        }
+    }
 
     private var thumbnailImage: Image {
         if let nsImage = cache.retrieve(forHash: item.contentHash) {
