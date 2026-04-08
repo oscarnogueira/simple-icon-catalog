@@ -2,6 +2,12 @@ import Foundation
 import AppKit
 import CryptoKit
 
+struct IndexDelta {
+    var added: [IconItem] = []
+    var removed: Set<UUID> = []
+    var modified: [IconItem] = []
+}
+
 class IconIndexer {
     private let scanner = DirectoryScanner()
     private let svgAnalyzer = SVGAnalyzer()
@@ -13,6 +19,7 @@ class IconIndexer {
         self.cache = cache
     }
 
+    /// Full index — scans everything from scratch.
     func index(directories: [URL]) -> AsyncStream<IconItem> {
         AsyncStream { continuation in
             Task {
@@ -29,6 +36,46 @@ class IconIndexer {
                 continuation.finish()
             }
         }
+    }
+
+    /// Incremental index — compares current files on disk against existing icons.
+    /// Returns only the delta: new files, removed files, and modified files.
+    func incrementalIndex(directories: [URL], existing: [IconItem]) async -> IndexDelta {
+        var delta = IndexDelta()
+
+        guard let currentFiles = try? await scanner.scan(directories: directories) else {
+            return delta
+        }
+
+        let currentPaths = Set(currentFiles.map(\.path))
+        let existingByPath = Dictionary(uniqueKeysWithValues: existing.map { ($0.fileURL.path, $0) })
+        let existingPaths = Set(existingByPath.keys)
+
+        // Removed: in existing but no longer on disk
+        for path in existingPaths.subtracting(currentPaths) {
+            if let item = existingByPath[path] {
+                delta.removed.insert(item.id)
+            }
+        }
+
+        // New or modified
+        for fileURL in currentFiles {
+            let path = fileURL.path
+            if let existingItem = existingByPath[path] {
+                // Check if file was modified by comparing content hash
+                let currentHash = hashFile(fileURL)
+                if currentHash != existingItem.contentHash {
+                    let item = await processFile(fileURL)
+                    delta.modified.append(item)
+                }
+            } else {
+                // New file
+                let item = await processFile(fileURL)
+                delta.added.append(item)
+            }
+        }
+
+        return delta
     }
 
     private func processFile(_ fileURL: URL) async -> IconItem {

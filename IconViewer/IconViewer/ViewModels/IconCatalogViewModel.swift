@@ -106,7 +106,31 @@ class IconCatalogViewModel: ObservableObject {
         debounceTask = Task {
             try? await Task.sleep(for: .seconds(1))
             guard !Task.isCancelled else { return }
-            startIndexing()
+            await incrementalReindex()
         }
+    }
+
+    private func incrementalReindex() async {
+        guard !sourceDirectories.isEmpty else { return }
+
+        let delta = await indexer.incrementalIndex(
+            directories: sourceDirectories,
+            existing: allIcons
+        )
+
+        // Remove deleted
+        if !delta.removed.isEmpty {
+            allIcons.removeAll { delta.removed.contains($0.id) }
+        }
+
+        // Update modified (replace in place)
+        for item in delta.modified {
+            if let idx = allIcons.firstIndex(where: { $0.fileURL == item.fileURL }) {
+                allIcons[idx] = item
+            }
+        }
+
+        // Add new
+        allIcons.append(contentsOf: delta.added)
     }
 }
