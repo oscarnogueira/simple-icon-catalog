@@ -1,18 +1,18 @@
-name: IconViewer
+name: SimpleIconCatalog
 options:
-  bundleIdPrefix: com.iconviewer
+  bundleIdPrefix: com.simpleicocatalog
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "15.0"
 targets:
-  IconViewer:
+  SimpleIconCatalog:
     type: application
     platform: macOS
     sources:
-      - path: IconViewer
+      - path: SimpleIconCatalog
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.simpleicocatalog.app
         PRODUCT_NAME: Simple Icon Catalog
         PRODUCT_MODULE_NAME: IconViewer
         MACOSX_DEPLOYMENT_TARGET: "14.0"
@@ -20,25 +20,25 @@ targets:
         GENERATE_INFOPLIST_FILE: "YES"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
-  IconViewerTests:
+  SimpleIconCatalogTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - path: IconViewerTests
+      - path: SimpleIconCatalogTests
     dependencies:
-      - target: IconViewer
+      - target: SimpleIconCatalog
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.simpleicocatalog.tests
         GENERATE_INFOPLIST_FILE: "YES"
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Simple Icon Catalog.app/Contents/MacOS/Simple Icon Catalog"
         BUNDLE_LOADER: "$(TEST_HOST)"
 schemes:
-  IconViewer:
+  SimpleIconCatalog:
     build:
       targets:
-        IconViewer: all
-        IconViewerTests: [test]
+        SimpleIconCatalog: all
+        SimpleIconCatalogTests: [test]
     test:
       targets:
-        - IconViewerTests
+        - SimpleIconCatalogTests
