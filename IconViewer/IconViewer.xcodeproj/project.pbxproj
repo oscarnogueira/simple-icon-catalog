@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		18E92A757FD63CA3E41DD534 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4E82A2321729F9457A4DF /* ContentView.swift */; };
+		A1B2C3D4E5F60001ABCD0001 /* DirectoryScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002ABCD0001 /* DirectoryScanner.swift */; };
+		A1B2C3D4E5F60003ABCD0001 /* DirectoryScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60004ABCD0001 /* DirectoryScannerTests.swift */; };
 		C24C86369999572E7865C5D1 /* IconViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B838486AA469913B9E79A6 /* IconViewerApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +26,8 @@
 /* Begin PBXFileReference section */
 		2DDCD6B5960BE776B7767170 /* IconViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IconViewerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DA4E82A2321729F9457A4DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002ABCD0001 /* DirectoryScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryScanner.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60004ABCD0001 /* DirectoryScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryScannerTests.swift; sourceTree = "<group>"; };
 		D7B838486AA469913B9E79A6 /* IconViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewerApp.swift; sourceTree = "<group>"; };
 		E4F4D33270912CA607307B35 /* IconViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IconViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -34,8 +38,17 @@
 			children = (
 				D7B838486AA469913B9E79A6 /* IconViewerApp.swift */,
 				DFCFC5FC4B3EE78C880ADA59 /* Views */,
+				A1B2C3D4E5F60005ABCD0001 /* Services */,
 			);
 			path = IconViewer;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F60005ABCD0001 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60002ABCD0001 /* DirectoryScanner.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		4CBAE143C6F026D3A85DCE87 /* Products */ = {
@@ -50,6 +63,7 @@
 		4F663F11682D74C774EAEF7C /* IconViewerTests */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D4E5F60004ABCD0001 /* DirectoryScannerTests.swift */,
 			);
 			path = IconViewerTests;
 			sourceTree = "<group>";
@@ -145,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B2C3D4E5F60003ABCD0001 /* DirectoryScannerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +169,7 @@
 			files = (
 				18E92A757FD63CA3E41DD534 /* ContentView.swift in Sources */,
 				C24C86369999572E7865C5D1 /* IconViewerApp.swift in Sources */,
+				A1B2C3D4E5F60001ABCD0001 /* DirectoryScanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +197,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.tests;
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IconViewer.app/Contents/MacOS/IconViewer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Icon Viewer.app/Contents/MacOS/Icon Viewer";
 			};
 			name = Debug;
 		};
@@ -198,6 +214,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.app;
+				PRODUCT_MODULE_NAME = IconViewer;
 				PRODUCT_NAME = "Icon Viewer";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
@@ -217,7 +234,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.tests;
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IconViewer.app/Contents/MacOS/IconViewer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Icon Viewer.app/Contents/MacOS/Icon Viewer";
 			};
 			name = Release;
 		};
@@ -353,6 +370,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.app;
+				PRODUCT_MODULE_NAME = IconViewer;
 				PRODUCT_NAME = "Icon Viewer";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
