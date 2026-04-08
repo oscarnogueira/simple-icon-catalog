@@ -16,6 +16,7 @@ targets:
         PRODUCT_NAME: Icon Viewer
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         SWIFT_VERSION: "5.9"
+        GENERATE_INFOPLIST_FILE: "YES"
         INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
   IconViewerTests:
     type: bundle.unit-test
@@ -27,3 +28,4 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.tests
+        GENERATE_INFOPLIST_FILE: "YES"
