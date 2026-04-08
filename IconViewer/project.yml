@@ -1,0 +1,29 @@
+name: IconViewer
+options:
+  bundleIdPrefix: com.iconviewer
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+targets:
+  IconViewer:
+    type: application
+    platform: macOS
+    sources:
+      - path: IconViewer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.app
+        PRODUCT_NAME: Icon Viewer
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        SWIFT_VERSION: "5.9"
+        INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
+  IconViewerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: IconViewerTests
+    dependencies:
+      - target: IconViewer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.tests
