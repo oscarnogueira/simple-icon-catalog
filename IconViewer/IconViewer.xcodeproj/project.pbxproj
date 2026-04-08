@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		137C3EBED3A1A236E26F07B7 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FFE30C3FD0832A5D19CA9B /* AboutView.swift */; };
 		1634CAA275FB439D3A0CF68B /* SVGAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F13B0E4D684B8E5740ADED /* SVGAnalyzerTests.swift */; };
 		18E92A757FD63CA3E41DD534 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4E82A2321729F9457A4DF /* ContentView.swift */; };
 		195947B3F6F86729B22F7306 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46702D68AA39EE6D9FA4C58E /* Assets.xcassets */; };
@@ -77,6 +78,7 @@
 		D7B838486AA469913B9E79A6 /* IconViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewerApp.swift; sourceTree = "<group>"; };
 		E4F4D33270912CA607307B35 /* IconViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IconViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5ABA1F0D2B620BD144DD7D8 /* QuarantineClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifier.swift; sourceTree = "<group>"; };
+		F8FFE30C3FD0832A5D19CA9B /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		FF46848B965B9FBDF0EBBE56 /* SVGAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAnalyzer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -170,6 +172,7 @@
 		DFCFC5FC4B3EE78C880ADA59 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8FFE30C3FD0832A5D19CA9B /* AboutView.swift */,
 				5DA4E82A2321729F9457A4DF /* ContentView.swift */,
 				2779629942E3BC7060EFF12B /* IconCellView.swift */,
 				C721745649696AACF5E399A1 /* IconDetailView.swift */,
@@ -280,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				137C3EBED3A1A236E26F07B7 /* AboutView.swift in Sources */,
 				18E92A757FD63CA3E41DD534 /* ContentView.swift in Sources */,
 				BB5A4DAF9A84D8F5E7D5C7F0 /* DirectoryScanner.swift in Sources */,
 				BD5D0FBD6029962B263B8575 /* DirectoryWatcher.swift in Sources */,

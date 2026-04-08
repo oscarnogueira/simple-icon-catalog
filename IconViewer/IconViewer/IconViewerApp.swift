@@ -12,6 +12,9 @@ struct IconViewerApp: App {
         .windowStyle(.titleBar)
         .defaultSize(width: 900, height: 700)
         .commands {
+            CommandGroup(replacing: .appInfo) {
+                OpenWindowButton(id: "about", label: "About Icon Viewer")
+            }
             CommandGroup(after: .appInfo) {
                 OpenWindowButton(id: "statistics", label: "Statistics...")
                     .keyboardShortcut("i", modifiers: [.command])
@@ -40,6 +43,12 @@ struct IconViewerApp: App {
             QuarantineView(viewModel: viewModel)
         }
         .defaultSize(width: 500, height: 400)
+
+        Window("About Icon Viewer", id: "about") {
+            AboutView()
+        }
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
     }
 }
 
