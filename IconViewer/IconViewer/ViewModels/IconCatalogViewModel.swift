@@ -72,6 +72,7 @@ class IconCatalogViewModel: ObservableObject {
         guard !dirs.contains(url) else { return }
         dirs.append(url)
         sourceDirectories = dirs
+        startIndexing()
     }
 
     func removeDirectory(_ url: URL) {
