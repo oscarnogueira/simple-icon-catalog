@@ -14,6 +14,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.app
         PRODUCT_NAME: Icon Viewer
+        PRODUCT_MODULE_NAME: IconViewer
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         SWIFT_VERSION: "5.9"
         GENERATE_INFOPLIST_FILE: "YES"
@@ -29,3 +30,14 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.iconviewer.tests
         GENERATE_INFOPLIST_FILE: "YES"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Icon Viewer.app/Contents/MacOS/Icon Viewer"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  IconViewer:
+    build:
+      targets:
+        IconViewer: all
+        IconViewerTests: [test]
+    test:
+      targets:
+        - IconViewerTests
