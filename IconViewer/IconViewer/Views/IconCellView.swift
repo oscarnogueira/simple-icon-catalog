@@ -38,10 +38,21 @@ struct IconCellView: View {
             Button("Copy Image") {
                 PasteboardHelper.copyIcon(item, cache: cache)
             }
+            Button("Show in Finder") {
+                NSWorkspace.shared.activateFileViewerSelecting([item.fileURL])
+            }
+            Divider()
+            Button("Details...") {
+                showDetail = true
+            }
+        }
+        .sheet(isPresented: $showDetail) {
+            IconDetailView(item: item, cache: cache)
         }
     }
 
     @State private var isHovering = false
+    @State private var showDetail = false
 
     @ViewBuilder
     private var iconView: some View {

@@ -27,6 +27,7 @@
 		9A96D58140459CE74BF21306 /* IconIndexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B75DCB6690EE308C40E132 /* IconIndexerTests.swift */; };
 		A2196F583CBD09EE47358CFB /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A13BE20C17B8801CA7CAB6 /* StatisticsViewModel.swift */; };
 		AC1CD2147CCE39B3117B882F /* IconCatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E04BEF4B87F066469480C8C /* IconCatalogViewModel.swift */; };
+		B553BEF08422B02006788E62 /* IconDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C721745649696AACF5E399A1 /* IconDetailView.swift */; };
 		BB5A4DAF9A84D8F5E7D5C7F0 /* DirectoryScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEA430F14D98FD5A092F7CD /* DirectoryScanner.swift */; };
 		BD28A89D40ED3E2EB34D6CB5 /* IconItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1369B34D84D986B80B0025 /* IconItem.swift */; };
 		BD5D0FBD6029962B263B8575 /* DirectoryWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50416B6C806F7449C342624F /* DirectoryWatcher.swift */; };
@@ -72,6 +73,7 @@
 		A9CF53624F5B4A1B7811BF25 /* PasteboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardHelper.swift; sourceTree = "<group>"; };
 		B15FB83B2DED3C3AF6E4BCC9 /* ThumbnailCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCacheTests.swift; sourceTree = "<group>"; };
 		B930670AC917E0C3384045A5 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		C721745649696AACF5E399A1 /* IconDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconDetailView.swift; sourceTree = "<group>"; };
 		D7B838486AA469913B9E79A6 /* IconViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewerApp.swift; sourceTree = "<group>"; };
 		E4F4D33270912CA607307B35 /* IconViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IconViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5ABA1F0D2B620BD144DD7D8 /* QuarantineClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifier.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				5DA4E82A2321729F9457A4DF /* ContentView.swift */,
 				2779629942E3BC7060EFF12B /* IconCellView.swift */,
+				C721745649696AACF5E399A1 /* IconDetailView.swift */,
 				5A2F6B2C7480CD8770A07B22 /* IconGridView.swift */,
 				0D0DCF47A2169ECF0A2724B2 /* PreferencesView.swift */,
 				413424A615F43ECD5BCF55B9 /* QuarantineView.swift */,
@@ -282,6 +285,7 @@
 				BD5D0FBD6029962B263B8575 /* DirectoryWatcher.swift in Sources */,
 				AC1CD2147CCE39B3117B882F /* IconCatalogViewModel.swift in Sources */,
 				75E94A2E1328E635F076F052 /* IconCellView.swift in Sources */,
+				B553BEF08422B02006788E62 /* IconDetailView.swift in Sources */,
 				3766E4BAB228CD9809796242 /* IconGridView.swift in Sources */,
 				1BFCFA033812F5BAB6924BD8 /* IconIndexer.swift in Sources */,
 				BD28A89D40ED3E2EB34D6CB5 /* IconItem.swift in Sources */,
