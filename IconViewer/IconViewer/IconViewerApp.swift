@@ -13,7 +13,7 @@ struct IconViewerApp: App {
         .defaultSize(width: 900, height: 700)
         .commands {
             CommandGroup(replacing: .appInfo) {
-                OpenWindowButton(id: "about", label: "About Icon Viewer")
+                OpenWindowButton(id: "about", label: "About Simple Icon Catalog")
             }
             CommandGroup(after: .appInfo) {
                 OpenWindowButton(id: "statistics", label: "Statistics...")
@@ -44,7 +44,7 @@ struct IconViewerApp: App {
         }
         .defaultSize(width: 500, height: 400)
 
-        Window("About Icon Viewer", id: "about") {
+        Window("About Simple Icon Catalog", id: "about") {
             AboutView()
         }
         .windowResizability(.contentSize)

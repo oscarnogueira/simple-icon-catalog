@@ -332,7 +332,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.tests;
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Icon Viewer.app/Contents/MacOS/Icon Viewer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Simple Icon Catalog.app/Contents/MacOS/Simple Icon Catalog";
 			};
 			name = Debug;
 		};
@@ -350,7 +350,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.app;
 				PRODUCT_MODULE_NAME = IconViewer;
-				PRODUCT_NAME = "Icon Viewer";
+				PRODUCT_NAME = "Simple Icon Catalog";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};
@@ -369,7 +369,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.tests;
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Icon Viewer.app/Contents/MacOS/Icon Viewer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Simple Icon Catalog.app/Contents/MacOS/Simple Icon Catalog";
 			};
 			name = Release;
 		};
@@ -506,7 +506,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iconviewer.app;
 				PRODUCT_MODULE_NAME = IconViewer;
-				PRODUCT_NAME = "Icon Viewer";
+				PRODUCT_NAME = "Simple Icon Catalog";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};

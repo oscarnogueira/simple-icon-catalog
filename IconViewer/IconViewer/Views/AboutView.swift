@@ -11,7 +11,7 @@ struct AboutView: View {
                 .frame(width: 128, height: 128)
                 .shadow(color: .black.opacity(0.2), radius: 8, y: 4)
 
-            Text("Icon Viewer")
+            Text("Simple Icon Catalog")
                 .font(.system(size: 24, weight: .bold, design: .rounded))
 
             Text("Version \(appVersion)")
