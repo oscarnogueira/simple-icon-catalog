@@ -2,10 +2,17 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum StyleFilter: String, CaseIterable {
+    case all = "All"
+    case color = "Color"
+    case monochrome = "Mono"
+}
+
 @MainActor
 class IconCatalogViewModel: ObservableObject {
     @Published var allIcons: [IconItem] = []
     @Published var searchText: String = ""
+    @Published var styleFilter: StyleFilter = .all
     @Published var thumbnailSize: CGFloat = 64
     @Published var progress = IndexingProgress()
     @Published var lastIndexedAt: Date?
@@ -19,11 +26,18 @@ class IconCatalogViewModel: ObservableObject {
     private var debounceTask: Task<Void, Never>?
 
     var filteredIcons: [IconItem] {
-        let active = allIcons.filter { !$0.isQuarantined }
-        if searchText.isEmpty { return active }
-        return active.filter {
-            $0.displayName.localizedCaseInsensitiveContains(searchText)
+        var result = allIcons.filter { !$0.isQuarantined }
+        switch styleFilter {
+        case .all: break
+        case .color: result = result.filter { !$0.isMonochrome }
+        case .monochrome: result = result.filter { $0.isMonochrome }
         }
+        if !searchText.isEmpty {
+            result = result.filter {
+                $0.displayName.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+        return result
     }
 
     var quarantinedIcons: [IconItem] {

@@ -55,6 +55,15 @@ struct ContentView: View {
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 200)
 
+                    // Style filter
+                    Picker("", selection: $viewModel.styleFilter) {
+                        ForEach(StyleFilter.allCases, id: \.self) { filter in
+                            Text(filter.rawValue).tag(filter)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 130)
+
                     // Size slider
                     HStack(spacing: 4) {
                         Image(systemName: "square.grid.3x3")
