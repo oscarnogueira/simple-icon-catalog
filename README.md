@@ -37,7 +37,7 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/simple-icon-catalog.git
+git clone https://github.com/oscarnogueira/simple-icon-catalog.git
 cd simple-icon-catalog
 
 # Generate the Xcode project
