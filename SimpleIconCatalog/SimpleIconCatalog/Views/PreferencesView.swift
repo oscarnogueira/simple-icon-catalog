@@ -47,25 +47,35 @@ struct PreferencesView: View {
                 }
             }
 
-            Section {
+            Section("Quarantine") {
+                Text("Files that don't look like icons are automatically quarantined — images that are too large, too small, or have unusual aspect ratios. You can review and restore them.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 HStack {
+                    Spacer()
                     Button {
                         openWindow(id: "quarantine")
                     } label: {
-                        Label("Quarantine", systemImage: "exclamationmark.triangle")
+                        Label("Open Quarantine", systemImage: "exclamationmark.triangle")
                     }
+                }
+            }
 
+            Section("Statistics") {
+                Text("Overview of your catalog: total icons, format breakdown, directory counts, cache size, and indexing history.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                HStack {
                     Spacer()
-
                     Button {
                         openWindow(id: "statistics")
                     } label: {
-                        Label("Statistics", systemImage: "chart.bar")
+                        Label("Open Statistics", systemImage: "chart.bar")
                     }
                 }
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 350)
+        .frame(width: 450, height: 480)
     }
 }
