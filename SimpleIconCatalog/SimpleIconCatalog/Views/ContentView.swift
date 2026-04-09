@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: IconCatalogViewModel
+    @FocusState private var isSearchFocused: Bool
 
     var body: some View {
         VStack(spacing: 0) {
@@ -50,9 +51,10 @@ struct ContentView: View {
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
                     // Search
-                    TextField("Filter", text: $viewModel.searchText)
+                    TextField("Filter (/)", text: $viewModel.searchText)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 200)
+                        .focused($isSearchFocused)
 
                     // Style filter
                     Picker("", selection: $viewModel.styleFilter) {
@@ -98,6 +100,10 @@ struct ContentView: View {
         .onAppear {
             viewModel.startIndexing()
             viewModel.startWatching()
+        }
+        .onKeyPress("/") {
+            isSearchFocused = true
+            return .handled
         }
     }
 
