@@ -80,10 +80,20 @@ hdiutil create \
   -fs HFS+ \
   "$DMG_TEMP"
 
+# Generate background image with install instructions
+DMG_BG="$BUILD_DIR/dmg-background.png"
+magick -size 540x300 xc:none \
+  -font "/System/Library/Fonts/Supplemental/Arial.ttf" -pointsize 15 \
+  -fill "rgba(160,160,160,0.9)" -gravity south \
+  -annotate +0+28 "Drag the app to your Applications folder to install" \
+  "$DMG_BG"
+
 # Mount and copy contents (preserving symlinks)
 MOUNT_DIR=$(hdiutil attach "$DMG_TEMP" -readwrite -noverify | grep "/Volumes/" | sed 's/.*\/Volumes/\/Volumes/')
 if [ -n "$MOUNT_DIR" ]; then
   cp -R "$DMG_STAGING/." "$MOUNT_DIR/"
+  mkdir -p "$MOUNT_DIR/.background"
+  cp "$DMG_BG" "$MOUNT_DIR/.background/background.png"
   hdiutil detach "$MOUNT_DIR" -quiet
 fi
 
@@ -103,6 +113,7 @@ tell application "Finder"
     set opts to icon view options of container window
     set icon size of opts to 160
     set arrangement of opts to not arranged
+    set background picture of opts to file ".background:background.png"
     try
       set position of item "$APP_NAME.app" of container window to {140, 150}
     end try
