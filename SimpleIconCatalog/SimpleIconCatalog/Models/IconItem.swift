@@ -1,7 +1,7 @@
 import Foundation
 import AppKit
 
-struct IconItem: Identifiable, Hashable {
+struct IconItem: Identifiable, Hashable, Codable {
     let id: UUID
     let fileURL: URL
     let fileName: String

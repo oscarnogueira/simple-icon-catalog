@@ -118,7 +118,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            viewModel.startIndexing()
+            viewModel.loadAndSync()
             viewModel.startWatching()
         }
         .onKeyPress("/") {

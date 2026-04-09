@@ -37,6 +37,7 @@ class IconCatalogViewModel: ObservableObject {
     @AppStorage("favoritePaths") private var favoritePathsData: Data = Data()
 
     private let indexer: IconIndexer
+    private let indexStore = IndexStore()
     let cache: ThumbnailCache
     private var directoryWatcher: DirectoryWatcher?
     private var debounceTask: Task<Void, Never>?
@@ -130,6 +131,23 @@ class IconCatalogViewModel: ObservableObject {
         self.indexer = IconIndexer(cache: cache)
     }
 
+    /// Called on app launch. Loads persisted index instantly, then runs incremental sync.
+    func loadAndSync() {
+        guard !sourceDirectories.isEmpty else { return }
+
+        // Load persisted index immediately (instant UI)
+        if let saved = indexStore.load() {
+            allIcons = saved
+        }
+
+        // Then run incremental sync in background
+        Task {
+            await incrementalReindex()
+            indexStore.save(allIcons)
+        }
+    }
+
+    /// Full reindex from scratch. Used by reindex button and addDirectory.
     func startIndexing() {
         guard !sourceDirectories.isEmpty else { return }
 
@@ -153,6 +171,7 @@ class IconCatalogViewModel: ObservableObject {
             progress.isIndexing = false
             lastIndexedAt = Date()
             lastIndexDuration = Date().timeIntervalSince(startTime)
+            indexStore.save(allIcons)
         }
     }
 
@@ -194,6 +213,7 @@ class IconCatalogViewModel: ObservableObject {
             try? await Task.sleep(for: .seconds(1))
             guard !Task.isCancelled else { return }
             await incrementalReindex()
+            indexStore.save(allIcons)
         }
     }
 

@@ -12,6 +12,7 @@
 		1DA7CD7E069842662A58A80E /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EBB81FC78BE915CA7ECE9B /* PreferencesView.swift */; };
 		226C42DB51F1E4ACCDC88D83 /* QuarantineReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65D6E511663B42A2D170E6 /* QuarantineReason.swift */; };
 		244D168BBD3AB94AD88E63B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53A3C532370958C07B0B92EF /* Assets.xcassets */; };
+		304F34716D09FBBB8696036C /* IndexStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63522BB6A9B3A2EFCF640D3F /* IndexStore.swift */; };
 		345657E5FAE3D3421153B3D8 /* QuarantineClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488951A71E5769CC54BB3C6D /* QuarantineClassifier.swift */; };
 		363A78DBAE66B194A8489DAF /* IconCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1765117400E2BC99D4D29D6E /* IconCellView.swift */; };
 		39CAB996BA2F987DE3C9205C /* IconCatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14756CB3DDCC124539CFC88D /* IconCatalogViewModel.swift */; };
@@ -62,6 +63,7 @@
 		3DC73D8AED1065C21713F34B /* SimpleIconCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleIconCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		488951A71E5769CC54BB3C6D /* QuarantineClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifier.swift; sourceTree = "<group>"; };
 		53A3C532370958C07B0B92EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		63522BB6A9B3A2EFCF640D3F /* IndexStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexStore.swift; sourceTree = "<group>"; };
 		6E80CB385102FD9C88FCD905 /* IconCatalogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCatalogViewModelTests.swift; sourceTree = "<group>"; };
 		73A53CE0D1736C830C557B6C /* PasteboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardHelper.swift; sourceTree = "<group>"; };
 		82B8F90270B88E345F958AFB /* QuarantineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineView.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				09C124CDF09EBF60A9FD6D06 /* DirectoryScanner.swift */,
 				AE838970D3257FC99AD765DD /* DirectoryWatcher.swift */,
 				9D5C6CEF1E0560ADDD9690F2 /* IconIndexer.swift */,
+				63522BB6A9B3A2EFCF640D3F /* IndexStore.swift */,
 				488951A71E5769CC54BB3C6D /* QuarantineClassifier.swift */,
 				28F61017A1F492FE5DC9FB66 /* SVGAnalyzer.swift */,
 				EB40218949E38E7AA4867293 /* ThumbnailCache.swift */,
@@ -284,6 +287,7 @@
 				414414962D4F45296D76B7C4 /* IconIndexer.swift in Sources */,
 				54888BBD347A704AB7248E03 /* IconItem.swift in Sources */,
 				B50B7A1B45810022569C4D1F /* IconViewerApp.swift in Sources */,
+				304F34716D09FBBB8696036C /* IndexStore.swift in Sources */,
 				97FDF6D2259557913345B3C0 /* IndexingProgress.swift in Sources */,
 				7CDECFB7700318773CA19818 /* PasteboardHelper.swift in Sources */,
 				1DA7CD7E069842662A58A80E /* PreferencesView.swift in Sources */,
