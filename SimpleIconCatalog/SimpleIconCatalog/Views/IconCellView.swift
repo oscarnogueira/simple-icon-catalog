@@ -29,15 +29,22 @@ struct IconCellView: View {
                 }
             }
             .frame(width: thumbnailSize, height: thumbnailSize)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
+            )
             .scaleEffect(isHovering ? 1.05 : 1.0)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
 
             Text(item.displayName)
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(isSelected ? .primary : .secondary)
                 .lineLimit(1)
                 .truncationMode(.middle)
                 .frame(width: thumbnailSize)
+        }
+        .onTapGesture {
+            viewModel.selectedIcon = item
         }
         .onHover { hovering in
             isHovering = hovering
@@ -73,6 +80,10 @@ struct IconCellView: View {
 
     @State private var isHovering = false
     @State private var showDetail = false
+
+    private var isSelected: Bool {
+        viewModel.selectedIcon?.id == item.id
+    }
 
     @ViewBuilder
     private var iconView: some View {

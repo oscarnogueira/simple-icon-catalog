@@ -33,6 +33,7 @@
 		D738678386ECCACFEFD9E305 /* IconCatalogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80CB385102FD9C88FCD905 /* IconCatalogViewModelTests.swift */; };
 		EC230BD3FC937DD555E96449 /* QuarantineClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B75D537E1895E4DAF88699A /* QuarantineClassifierTests.swift */; };
 		EFAB39DE320A72EDF8A3DC08 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF80762ABFB7344129C9FDB /* StatisticsView.swift */; };
+		F2A8E46372577C4580620DAE /* QuickLookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3453BB07766E7085597EE501 /* QuickLookHelper.swift */; };
 		F7B8E9830406C0A275F6B3D6 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEC75FC1659234E4AC77DEA /* StatisticsViewModel.swift */; };
 		FB22D7A612796E7EAD821AB7 /* IconGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5949A4EE7BF8D3939B9E285 /* IconGridView.swift */; };
 		FF2CDCCB55FEB382C977B8DC /* QuarantineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B8F90270B88E345F958AFB /* QuarantineView.swift */; };
@@ -57,6 +58,7 @@
 		1765117400E2BC99D4D29D6E /* IconCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCellView.swift; sourceTree = "<group>"; };
 		28F61017A1F492FE5DC9FB66 /* SVGAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAnalyzer.swift; sourceTree = "<group>"; };
 		2B75D537E1895E4DAF88699A /* QuarantineClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifierTests.swift; sourceTree = "<group>"; };
+		3453BB07766E7085597EE501 /* QuickLookHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookHelper.swift; sourceTree = "<group>"; };
 		3DC73D8AED1065C21713F34B /* SimpleIconCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleIconCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		488951A71E5769CC54BB3C6D /* QuarantineClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifier.swift; sourceTree = "<group>"; };
 		53A3C532370958C07B0B92EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				73A53CE0D1736C830C557B6C /* PasteboardHelper.swift */,
+				3453BB07766E7085597EE501 /* QuickLookHelper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				345657E5FAE3D3421153B3D8 /* QuarantineClassifier.swift in Sources */,
 				226C42DB51F1E4ACCDC88D83 /* QuarantineReason.swift in Sources */,
 				FF2CDCCB55FEB382C977B8DC /* QuarantineView.swift in Sources */,
+				F2A8E46372577C4580620DAE /* QuickLookHelper.swift in Sources */,
 				96A4BA4D9529F730DDB952C7 /* SVGAnalyzer.swift in Sources */,
 				EFAB39DE320A72EDF8A3DC08 /* StatisticsView.swift in Sources */,
 				F7B8E9830406C0A275F6B3D6 /* StatisticsViewModel.swift in Sources */,

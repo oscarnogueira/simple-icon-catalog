@@ -125,6 +125,13 @@ struct ContentView: View {
             isSearchFocused = true
             return .handled
         }
+        .onKeyPress(.space) {
+            if let icon = viewModel.selectedIcon {
+                QuickLookHelper.shared.preview(url: icon.fileURL)
+                return .handled
+            }
+            return .ignored
+        }
         .onKeyPress(.escape) {
             if !viewModel.searchText.isEmpty {
                 viewModel.searchText = ""

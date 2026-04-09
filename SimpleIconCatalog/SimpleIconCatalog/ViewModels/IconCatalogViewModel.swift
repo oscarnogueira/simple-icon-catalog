@@ -27,6 +27,7 @@ class IconCatalogViewModel: ObservableObject {
     @Published var styleFilter: StyleFilter = .all
     @Published var formatFilter: FormatFilter = .all
     @Published var sortOrder: SortOrder = .name
+    @Published var selectedIcon: IconItem?
     @Published var thumbnailSize: CGFloat = 64
     @Published var progress = IndexingProgress()
     @Published var lastIndexedAt: Date?
