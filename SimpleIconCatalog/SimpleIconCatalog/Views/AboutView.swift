@@ -23,6 +23,7 @@ struct AboutView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
+                .fixedSize(horizontal: false, vertical: true)
 
             Divider()
                 .frame(width: 200)
@@ -55,10 +56,14 @@ struct AboutView: View {
                         .font(.caption2)
                         .foregroundStyle(.brown)
                 }
+
+                Text("Winter Garden, FL 🍊")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
             }
         }
         .padding(32)
-        .frame(width: 320, height: 360)
+        .frame(width: 400, height: 400)
     }
 
     private var appVersion: String {
