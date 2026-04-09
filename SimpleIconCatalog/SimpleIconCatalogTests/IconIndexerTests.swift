@@ -9,9 +9,9 @@ final class IconIndexerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("IconViewerTest-\(UUID().uuidString)")
+            .appendingPathComponent("SICTest-\(UUID().uuidString)")
         tempCacheDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("IconViewerTestCache-\(UUID().uuidString)")
+            .appendingPathComponent("SICTestCache-\(UUID().uuidString)")
         try! FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
     }
 

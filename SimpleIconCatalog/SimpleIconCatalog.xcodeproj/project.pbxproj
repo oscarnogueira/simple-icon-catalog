@@ -29,7 +29,7 @@
 		96A4BA4D9529F730DDB952C7 /* SVGAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F61017A1F492FE5DC9FB66 /* SVGAnalyzer.swift */; };
 		97FDF6D2259557913345B3C0 /* IndexingProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04DB44D924BBB0C65D23CD5 /* IndexingProgress.swift */; };
 		9B32D8810A0B7F23D3359CD3 /* ThumbnailCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025C267D6C2E57ECEB61D288 /* ThumbnailCacheTests.swift */; };
-		B50B7A1B45810022569C4D1F /* IconViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3024C7A5369360C1D59DD2 /* IconViewerApp.swift */; };
+		9DB53E27CE5F928ED331156D /* SimpleIconCatalogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21079D5F8E9D08C0ED5875A4 /* SimpleIconCatalogApp.swift */; };
 		CBE7F0B89A719E5EF21C8D0A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7067689817147C7A006126 /* AboutView.swift */; };
 		D738678386ECCACFEFD9E305 /* IconCatalogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80CB385102FD9C88FCD905 /* IconCatalogViewModelTests.swift */; };
 		EC230BD3FC937DD555E96449 /* QuarantineClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B75D537E1895E4DAF88699A /* QuarantineClassifierTests.swift */; };
@@ -57,6 +57,7 @@
 		0EF80762ABFB7344129C9FDB /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		14756CB3DDCC124539CFC88D /* IconCatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCatalogViewModel.swift; sourceTree = "<group>"; };
 		1765117400E2BC99D4D29D6E /* IconCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCellView.swift; sourceTree = "<group>"; };
+		21079D5F8E9D08C0ED5875A4 /* SimpleIconCatalogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIconCatalogApp.swift; sourceTree = "<group>"; };
 		28F61017A1F492FE5DC9FB66 /* SVGAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAnalyzer.swift; sourceTree = "<group>"; };
 		2B75D537E1895E4DAF88699A /* QuarantineClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifierTests.swift; sourceTree = "<group>"; };
 		3453BB07766E7085597EE501 /* QuickLookHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookHelper.swift; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		A570660C64AE183A4E44CF56 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AE838970D3257FC99AD765DD /* DirectoryWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryWatcher.swift; sourceTree = "<group>"; };
 		B04DB44D924BBB0C65D23CD5 /* IndexingProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexingProgress.swift; sourceTree = "<group>"; };
-		BE3024C7A5369360C1D59DD2 /* IconViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewerApp.swift; sourceTree = "<group>"; };
 		C988402D56DD41F8AB0DC92C /* SimpleIconCatalogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleIconCatalogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE65D6E511663B42A2D170E6 /* QuarantineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineReason.swift; sourceTree = "<group>"; };
 		D6EBB81FC78BE915CA7ECE9B /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				53A3C532370958C07B0B92EF /* Assets.xcassets */,
-				BE3024C7A5369360C1D59DD2 /* IconViewerApp.swift */,
+				21079D5F8E9D08C0ED5875A4 /* SimpleIconCatalogApp.swift */,
 				279B8F90C3B471D986317FBC /* Models */,
 				63A607906424CC801651B92E /* Services */,
 				29016955BE3231D076224346 /* Utilities */,
@@ -286,7 +286,6 @@
 				FB22D7A612796E7EAD821AB7 /* IconGridView.swift in Sources */,
 				414414962D4F45296D76B7C4 /* IconIndexer.swift in Sources */,
 				54888BBD347A704AB7248E03 /* IconItem.swift in Sources */,
-				B50B7A1B45810022569C4D1F /* IconViewerApp.swift in Sources */,
 				304F34716D09FBBB8696036C /* IndexStore.swift in Sources */,
 				97FDF6D2259557913345B3C0 /* IndexingProgress.swift in Sources */,
 				7CDECFB7700318773CA19818 /* PasteboardHelper.swift in Sources */,
@@ -296,6 +295,7 @@
 				FF2CDCCB55FEB382C977B8DC /* QuarantineView.swift in Sources */,
 				F2A8E46372577C4580620DAE /* QuickLookHelper.swift in Sources */,
 				96A4BA4D9529F730DDB952C7 /* SVGAnalyzer.swift in Sources */,
+				9DB53E27CE5F928ED331156D /* SimpleIconCatalogApp.swift in Sources */,
 				EFAB39DE320A72EDF8A3DC08 /* StatisticsView.swift in Sources */,
 				F7B8E9830406C0A275F6B3D6 /* StatisticsViewModel.swift in Sources */,
 				1610B3F4447E462A4EB8C75A /* ThumbnailCache.swift in Sources */,

@@ -9,7 +9,7 @@ final class ThumbnailCacheTests: XCTestCase {
     override func setUp() {
         super.setUp()
         tempCacheDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("IconViewerTestCache-\(UUID().uuidString)")
+            .appendingPathComponent("SICTestCache-\(UUID().uuidString)")
         cache = ThumbnailCache(cacheDirectory: tempCacheDir)
     }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct IconViewerApp: App {
+struct SimpleIconCatalogApp: App {
     @StateObject private var viewModel = IconCatalogViewModel()
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
 
