@@ -62,6 +62,13 @@ struct IconCellView: View {
         .sheet(isPresented: $showDetail) {
             IconDetailView(item: item, cache: cache)
         }
+        .draggable(item.fileURL) {
+            // Drag preview
+            ZStack {
+                iconView
+                    .frame(width: 48, height: 48)
+            }
+        }
     }
 
     @State private var isHovering = false
