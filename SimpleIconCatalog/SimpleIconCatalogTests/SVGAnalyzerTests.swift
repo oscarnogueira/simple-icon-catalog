@@ -80,6 +80,36 @@ final class SVGAnalyzerTests: XCTestCase {
         XCTAssertFalse(result.isMonochrome)
     }
 
+    func testDetectsColorFromInlineStyle() throws {
+        let svg = """
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path style="fill: #FF5733; stroke: #333333" d="M0 0h24v24H0z"/>
+        </svg>
+        """
+        let url = tempDir.appendingPathComponent("style-color.svg")
+        try svg.write(to: url, atomically: true, encoding: .utf8)
+
+        let analyzer = SVGAnalyzer()
+        let result = try analyzer.analyze(fileURL: url)
+
+        XCTAssertFalse(result.isMonochrome)
+    }
+
+    func testDetectsMonoFromInlineStyle() throws {
+        let svg = """
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path style="fill: #000000; stroke: none" d="M0 0h24v24H0z"/>
+        </svg>
+        """
+        let url = tempDir.appendingPathComponent("style-mono.svg")
+        try svg.write(to: url, atomically: true, encoding: .utf8)
+
+        let analyzer = SVGAnalyzer()
+        let result = try analyzer.analyze(fileURL: url)
+
+        XCTAssertTrue(result.isMonochrome)
+    }
+
     func testHandlesCorruptedSVG() throws {
         let url = tempDir.appendingPathComponent("bad.svg")
         try "not xml at all <<<>>>".write(to: url, atomically: true, encoding: .utf8)

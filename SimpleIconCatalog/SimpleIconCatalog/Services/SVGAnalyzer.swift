@@ -78,6 +78,19 @@ private class SVGXMLParser: NSObject, XMLParserDelegate {
 
         if let fill = attributes["fill"] { colors.insert(fill) }
         if let stroke = attributes["stroke"] { colors.insert(stroke) }
+
+        // Extract colors from inline style attribute (e.g. style="fill: #FF0000; stroke: blue")
+        if let style = attributes["style"] {
+            for property in style.split(separator: ";") {
+                let parts = property.split(separator: ":", maxSplits: 1)
+                guard parts.count == 2 else { continue }
+                let key = parts[0].trimmingCharacters(in: .whitespaces).lowercased()
+                let value = parts[1].trimmingCharacters(in: .whitespaces)
+                if key == "fill" || key == "stroke" {
+                    colors.insert(value)
+                }
+            }
+        }
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred error: Error) {
