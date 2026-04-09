@@ -12,7 +12,7 @@ struct IconCellView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(colorScheme == .dark
-                          ? Color.white.opacity(0.12)
+                          ? Color.white.opacity(0.22)
                           : Color.black.opacity(0.03))
                     .shadow(color: .black.opacity(0.15), radius: 3, y: 1)
 
