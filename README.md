@@ -19,12 +19,15 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 ## Features
 
 - **Visual grid** — Browse all your icons at a glance with continuous scroll
-- **Instant filter** — Search by filename, filter by style (color/monochrome) or format (SVG/PNG)
+- **Instant filter** — Search by filename (`/` to focus), filter by style (color/monochrome) or format (SVG/PNG). `Esc` clears the search
+- **Drag & drop** — Drag icons directly from the grid into Keynote, PowerPoint, or any other app
 - **Copy & paste** — Right-click any icon, copy as high-res PNG, paste directly into your presentation
 - **Favorites** — Mark icons as favorites (right-click > Add to Favorites) — they appear first in the grid with a star badge and persist across sessions
+- **Sort** — Sort by name, modification date, or file size. Favorites always stay on top
+- **Quick Look** — Click an icon to select it, press `Space` for native macOS Quick Look preview
 - **Auto-indexing** — Watches your directories for changes, updates incrementally (no manual refresh needed)
 - **Smart quarantine** — Automatically hides files that don't look like icons (too large, too small, bad aspect ratio) — review and restore them in a dedicated view with preview panel
-- **Dark mode** — Fully adapts to macOS light and dark themes; monochrome icons auto-adjust for visibility
+- **Dark mode** — Fully adapts to macOS light and dark themes; monochrome icons auto-adjust for visibility. Or choose Light/Dark manually in Settings
 - **Detail view** — Right-click > Details to see format, dimensions, file size, path, and style
 - **Statistics** — Overview of your catalog: icon counts, format breakdown, cache size, last index time
 - **Zero dependencies** — Pure Swift and SwiftUI. No Electron, no embedded browser, no bloat
