@@ -6,6 +6,10 @@ A lightweight native macOS app for browsing, filtering, and copying icons from y
 
 ---
 
+![Simple Icon Catalog](docs/screenshots/main-grid.png)
+
+---
+
 ## Why?
 
 If you work with icon collections for presentations, design, or development, you know the pain: hundreds of SVG/PNG files in a folder, no easy way to browse them visually, and no quick way to copy one into your slide deck.
@@ -24,9 +28,6 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 - **Statistics** — Overview of your catalog: icon counts, format breakdown, cache size, last index time
 - **Zero dependencies** — Pure Swift and SwiftUI. No Electron, no embedded browser, no bloat
 
-## Screenshots
-
-> _Coming soon_
 
 ## Requirements
 
