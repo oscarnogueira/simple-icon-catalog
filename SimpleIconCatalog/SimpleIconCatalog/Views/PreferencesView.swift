@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PreferencesView: View {
     @ObservedObject var viewModel: IconCatalogViewModel
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         Form {
@@ -42,6 +43,24 @@ struct PreferencesView: View {
                     Spacer()
                     Button("Clear Cache") {
                         try? viewModel.clearCache()
+                    }
+                }
+            }
+
+            Section {
+                HStack {
+                    Button {
+                        openWindow(id: "quarantine")
+                    } label: {
+                        Label("Quarantine", systemImage: "exclamationmark.triangle")
+                    }
+
+                    Spacer()
+
+                    Button {
+                        openWindow(id: "statistics")
+                    } label: {
+                        Label("Statistics", systemImage: "chart.bar")
                     }
                 }
             }
