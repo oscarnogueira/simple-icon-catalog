@@ -60,7 +60,7 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 130)
+                    .frame(width: 160)
 
                     // Format filter
                     Picker("", selection: $viewModel.formatFilter) {
@@ -69,7 +69,7 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 120)
+                    .frame(width: 150)
 
                     // Size slider
                     HStack(spacing: 4) {
