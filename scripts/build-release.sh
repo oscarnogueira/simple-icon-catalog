@@ -101,7 +101,7 @@ tell application "Finder"
     set statusbar visible of container window to false
     set bounds of container window to {100, 100, 640, 400}
     set opts to icon view options of container window
-    set icon size of opts to 128
+    set icon size of opts to 160
     set arrangement of opts to not arranged
     try
       set position of item "$APP_NAME.app" of container window to {140, 150}
