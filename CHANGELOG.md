@@ -2,6 +2,20 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.0.3] - 2026-04-09
+
+### Changed
+- Index persistence migrated from JSON to SQLite (`~/Library/Application Support/{BundleID}/index.db`)
+- Favorites now stored in SQLite (single source of truth)
+- Thumbnail cache path uses bundle identifier (`~/Library/Caches/{BundleID}/`)
+- App launches instantly — loads persisted index from SQLite, then runs incremental sync in background
+- Removed all legacy "IconViewer" references from internal paths and names
+- Styled DMG installer with Applications shortcut, background message, and 128px icons
+
+### Fixed
+- Crash on launch when appearance mode was set (NSApp nil during init)
+- DMG styling now persists correctly (icon size, positions, background)
+
 ## [1.0.2] - 2026-04-09
 
 ### Added
