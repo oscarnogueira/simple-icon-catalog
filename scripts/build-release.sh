@@ -62,13 +62,73 @@ if [ ! -d "$APP_PATH" ]; then
   exit 1
 fi
 
-# Create DMG
+# Create DMG with Applications symlink and styled layout
 echo "==> Creating DMG..."
+DMG_STAGING="$BUILD_DIR/dmg-staging"
+rm -rf "$DMG_STAGING"
+mkdir -p "$DMG_STAGING"
+cp -R "$APP_PATH" "$DMG_STAGING/"
+ln -s /Applications "$DMG_STAGING/Applications"
+
+# Create temporary read-write DMG (empty, then copy contents preserving symlinks)
+DMG_TEMP="$BUILD_DIR/temp.dmg"
 hdiutil create \
   -volname "$APP_NAME" \
-  -srcfolder "$APP_PATH" \
-  -ov -format UDZO \
-  "$DMG_PATH"
+  -size 20m \
+  -ov \
+  -type UDIF \
+  -fs HFS+ \
+  "$DMG_TEMP"
+
+# Mount and copy contents (preserving symlinks)
+MOUNT_DIR=$(hdiutil attach "$DMG_TEMP" -readwrite -noverify | grep "/Volumes/" | sed 's/.*\/Volumes/\/Volumes/')
+if [ -n "$MOUNT_DIR" ]; then
+  cp -R "$DMG_STAGING/." "$MOUNT_DIR/"
+  hdiutil detach "$MOUNT_DIR" -quiet
+fi
+
+# Re-mount for styling
+MOUNT_DIR=$(hdiutil attach "$DMG_TEMP" -readwrite -noverify | grep "/Volumes/" | sed 's/.*\/Volumes/\/Volumes/')
+if [ -n "$MOUNT_DIR" ]; then
+  # Set icon size and view options via .DS_Store-free approach
+  # Use Finder AppleScript with retry for positioning
+  osascript <<APPLESCRIPT
+tell application "Finder"
+  tell disk "$APP_NAME"
+    open
+    set current view of container window to icon view
+    set toolbar visible of container window to false
+    set statusbar visible of container window to false
+    set bounds of container window to {100, 100, 640, 400}
+    set opts to icon view options of container window
+    set icon size of opts to 128
+    set arrangement of opts to not arranged
+    try
+      set position of item "$APP_NAME.app" of container window to {140, 150}
+    end try
+    try
+      set position of item "Applications" of container window to {400, 150}
+    end try
+    update without registering applications
+    delay 1
+    close
+  end tell
+end tell
+APPLESCRIPT
+  # Set volume icon if app icon exists
+  if [ -f "$APP_PATH/Contents/Resources/AppIcon.icns" ]; then
+    cp "$APP_PATH/Contents/Resources/AppIcon.icns" "$MOUNT_DIR/.VolumeIcon.icns"
+    SetFile -c icnC "$MOUNT_DIR/.VolumeIcon.icns" 2>/dev/null || true
+    SetFile -a C "$MOUNT_DIR" 2>/dev/null || true
+  fi
+  sync
+  hdiutil detach "$MOUNT_DIR" -quiet
+fi
+
+# Convert to compressed read-only DMG
+hdiutil convert "$DMG_TEMP" -format UDZO -o "$DMG_PATH" -ov
+rm -f "$DMG_TEMP"
+rm -rf "$DMG_STAGING"
 
 if [ ! -f "$DMG_PATH" ]; then
   echo "ERROR: DMG creation failed."
