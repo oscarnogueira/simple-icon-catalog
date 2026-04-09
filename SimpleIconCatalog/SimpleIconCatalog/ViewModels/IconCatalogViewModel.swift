@@ -34,35 +34,27 @@ class IconCatalogViewModel: ObservableObject {
     @Published var lastIndexDuration: TimeInterval?
 
     @AppStorage("sourceDirectories") private var sourceDirectoriesData: Data = Data()
-    @AppStorage("favoritePaths") private var favoritePathsData: Data = Data()
 
     private let indexer: IconIndexer
     private let indexStore = IndexStore()
     let cache: ThumbnailCache
     private var directoryWatcher: DirectoryWatcher?
     private var debounceTask: Task<Void, Never>?
-
-    private var favoritePaths: Set<String> {
-        get {
-            (try? JSONDecoder().decode(Set<String>.self, from: favoritePathsData)) ?? []
-        }
-        set {
-            favoritePathsData = (try? JSONEncoder().encode(newValue)) ?? Data()
-        }
-    }
+    private var _favoritePaths: Set<String> = []
 
     func isFavorite(_ item: IconItem) -> Bool {
-        favoritePaths.contains(item.fileURL.path)
+        _favoritePaths.contains(item.fileURL.path)
     }
 
     func toggleFavorite(_ item: IconItem) {
-        var paths = favoritePaths
-        if paths.contains(item.fileURL.path) {
-            paths.remove(item.fileURL.path)
+        let path = item.fileURL.path
+        if _favoritePaths.contains(path) {
+            _favoritePaths.remove(path)
+            indexStore.setFavorite(path: path, isFavorite: false)
         } else {
-            paths.insert(item.fileURL.path)
+            _favoritePaths.insert(path)
+            indexStore.setFavorite(path: path, isFavorite: true)
         }
-        favoritePaths = paths
         objectWillChange.send()
     }
 
@@ -90,7 +82,7 @@ class IconCatalogViewModel: ObservableObject {
         case .size: result.sort { $0.fileSize > $1.fileSize }
         }
         // Favorites first (stable, preserves sort within each group)
-        let favs = favoritePaths
+        let favs = _favoritePaths
         result.sort { a, b in
             let aFav = favs.contains(a.fileURL.path)
             let bFav = favs.contains(b.fileURL.path)
@@ -135,15 +127,16 @@ class IconCatalogViewModel: ObservableObject {
     func loadAndSync() {
         guard !sourceDirectories.isEmpty else { return }
 
-        // Load persisted index immediately (instant UI)
-        if let saved = indexStore.load() {
-            allIcons = saved
+        // Load persisted index from SQLite (instant UI)
+        if let saved = indexStore.loadAll() {
+            allIcons = saved.icons
+            _favoritePaths = saved.favorites
         }
 
         // Then run incremental sync in background
         Task {
             await incrementalReindex()
-            indexStore.save(allIcons)
+            persistIndex()
         }
     }
 
@@ -171,7 +164,7 @@ class IconCatalogViewModel: ObservableObject {
             progress.isIndexing = false
             lastIndexedAt = Date()
             lastIndexDuration = Date().timeIntervalSince(startTime)
-            indexStore.save(allIcons)
+            persistIndex()
         }
     }
 
@@ -193,6 +186,7 @@ class IconCatalogViewModel: ObservableObject {
     func promoteFromQuarantine(_ item: IconItem) {
         if let index = allIcons.firstIndex(where: { $0.id == item.id }) {
             allIcons[index].quarantineReason = nil
+            persistIndex()
         }
     }
 
@@ -213,7 +207,7 @@ class IconCatalogViewModel: ObservableObject {
             try? await Task.sleep(for: .seconds(1))
             guard !Task.isCancelled else { return }
             await incrementalReindex()
-            indexStore.save(allIcons)
+            persistIndex()
         }
     }
 
@@ -225,19 +219,18 @@ class IconCatalogViewModel: ObservableObject {
             existing: allIcons
         )
 
-        // Remove deleted
         if !delta.removed.isEmpty {
             allIcons.removeAll { delta.removed.contains($0.id) }
         }
-
-        // Update modified (replace in place)
         for item in delta.modified {
             if let idx = allIcons.firstIndex(where: { $0.fileURL == item.fileURL }) {
                 allIcons[idx] = item
             }
         }
-
-        // Add new
         allIcons.append(contentsOf: delta.added)
+    }
+
+    private func persistIndex() {
+        indexStore.saveAll(allIcons, favorites: _favoritePaths)
     }
 }
