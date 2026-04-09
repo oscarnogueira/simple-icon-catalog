@@ -89,9 +89,17 @@ class IconCatalogViewModel: ObservableObject {
         allIcons.filter { $0.isQuarantined }
     }
 
+    private var hasActiveFilter: Bool {
+        !searchText.isEmpty || styleFilter != .all || formatFilter != .all
+    }
+
     var iconCount: String {
-        let count = filteredIcons.count
-        return "\(count) icon\(count == 1 ? "" : "s")"
+        let filtered = filteredIcons.count
+        let total = allIcons.filter { !$0.isQuarantined }.count
+        if hasActiveFilter {
+            return "\(filtered) of \(total) icons"
+        }
+        return "\(total) icon\(total == 1 ? "" : "s")"
     }
 
     var sourceDirectories: [URL] {
