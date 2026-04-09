@@ -84,8 +84,8 @@ hdiutil create \
 DMG_BG="$BUILD_DIR/dmg-background.png"
 magick -size 540x300 xc:none \
   -font "/System/Library/Fonts/Supplemental/Arial.ttf" -pointsize 15 \
-  -fill "rgba(160,160,160,0.9)" -gravity south \
-  -annotate +0+28 "Drag the app to your Applications folder to install" \
+  -fill "rgba(160,160,160,0.9)" -gravity north \
+  -annotate +0+20 "Drag the app to your Applications folder to install" \
   "$DMG_BG"
 
 # Mount and copy contents (preserving symlinks)
@@ -111,7 +111,7 @@ tell application "Finder"
     set statusbar visible of container window to false
     set bounds of container window to {100, 100, 640, 400}
     set opts to icon view options of container window
-    set icon size of opts to 160
+    set icon size of opts to 128
     set arrangement of opts to not arranged
     set background picture of opts to file ".background:background.png"
     try
