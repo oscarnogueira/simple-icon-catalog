@@ -74,6 +74,26 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                     .frame(width: 150)
 
+                    // Sort order
+                    Menu {
+                        ForEach(SortOrder.allCases, id: \.self) { order in
+                            Button {
+                                viewModel.sortOrder = order
+                            } label: {
+                                HStack {
+                                    Text(order.rawValue)
+                                    if viewModel.sortOrder == order {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down")
+                    }
+                    .frame(width: 30)
+                    .help("Sort by")
+
                     // Size slider
                     HStack(spacing: 4) {
                         Image(systemName: "square.grid.3x3")

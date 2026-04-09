@@ -14,12 +14,19 @@ enum FormatFilter: String, CaseIterable {
     case png = "PNG"
 }
 
+enum SortOrder: String, CaseIterable {
+    case name = "Name"
+    case date = "Date"
+    case size = "Size"
+}
+
 @MainActor
 class IconCatalogViewModel: ObservableObject {
     @Published var allIcons: [IconItem] = []
     @Published var searchText: String = ""
     @Published var styleFilter: StyleFilter = .all
     @Published var formatFilter: FormatFilter = .all
+    @Published var sortOrder: SortOrder = .name
     @Published var thumbnailSize: CGFloat = 64
     @Published var progress = IndexingProgress()
     @Published var lastIndexedAt: Date?
@@ -74,7 +81,13 @@ class IconCatalogViewModel: ObservableObject {
                 $0.displayName.localizedCaseInsensitiveContains(searchText)
             }
         }
-        // Favorites first
+        // Sort
+        switch sortOrder {
+        case .name: result.sort { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }
+        case .date: result.sort { $0.modificationDate > $1.modificationDate }
+        case .size: result.sort { $0.fileSize > $1.fileSize }
+        }
+        // Favorites first (stable, preserves sort within each group)
         let favs = favoritePaths
         result.sort { a, b in
             let aFav = favs.contains(a.fileURL.path)

@@ -114,12 +114,22 @@ class IconIndexer {
             }
         }
 
+        // File metadata
+        var fileSize: Int64 = 0
+        var modDate = Date()
+        if let attrs = try? FileManager.default.attributesOfItem(atPath: fileURL.path) {
+            fileSize = attrs[.size] as? Int64 ?? 0
+            modDate = attrs[.modificationDate] as? Date ?? Date()
+        }
+
         return IconItem(
             fileURL: fileURL,
             contentHash: contentHash,
             width: width,
             height: height,
             isMonochrome: isMonochrome,
+            fileSize: fileSize,
+            modificationDate: modDate,
             quarantineReason: quarantineReason
         )
     }

@@ -10,6 +10,8 @@ struct IconItem: Identifiable, Hashable {
     let width: Int
     let height: Int
     let isMonochrome: Bool
+    let fileSize: Int64
+    let modificationDate: Date
     var quarantineReason: QuarantineReason?
 
     var isQuarantined: Bool { quarantineReason != nil }
@@ -17,7 +19,8 @@ struct IconItem: Identifiable, Hashable {
     var dimensions: String { "\(width) x \(height)" }
 
     init(fileURL: URL, contentHash: String, width: Int, height: Int,
-         isMonochrome: Bool = false, quarantineReason: QuarantineReason? = nil) {
+         isMonochrome: Bool = false, fileSize: Int64 = 0,
+         modificationDate: Date = Date(), quarantineReason: QuarantineReason? = nil) {
         self.id = UUID()
         self.fileURL = fileURL
         self.fileName = fileURL.lastPathComponent
@@ -26,6 +29,8 @@ struct IconItem: Identifiable, Hashable {
         self.width = width
         self.height = height
         self.isMonochrome = isMonochrome
+        self.fileSize = fileSize
+        self.modificationDate = modificationDate
         self.quarantineReason = quarantineReason
     }
 }
