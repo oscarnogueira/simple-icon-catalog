@@ -5,17 +5,13 @@ struct IconViewerApp: App {
     @StateObject private var viewModel = IconCatalogViewModel()
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
 
-    init() {
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            let mode = AppearanceMode(rawValue: UserDefaults.standard.string(forKey: "appearanceMode") ?? "system") ?? .system
-            mode.apply()
-        }
-    }
-
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .onAppear {
+                    appearanceMode.apply()
+                }
         }
         .windowStyle(.titleBar)
         .defaultSize(width: 900, height: 700)
