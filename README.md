@@ -21,32 +21,44 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 - **Visual grid** — Browse all your icons at a glance with continuous scroll
 - **Instant filter** — Search by filename, filter by style (color/monochrome) or format (SVG/PNG)
 - **Copy & paste** — Right-click any icon, copy as high-res PNG, paste directly into your presentation
+- **Favorites** — Mark icons as favorites (right-click > Add to Favorites) — they appear first in the grid with a star badge and persist across sessions
 - **Auto-indexing** — Watches your directories for changes, updates incrementally (no manual refresh needed)
-- **Smart quarantine** — Automatically hides files that don't look like icons (too large, too small, bad aspect ratio) with the option to restore them
+- **Smart quarantine** — Automatically hides files that don't look like icons (too large, too small, bad aspect ratio) — review and restore them in a dedicated view with preview panel
 - **Dark mode** — Fully adapts to macOS light and dark themes; monochrome icons auto-adjust for visibility
 - **Detail view** — Right-click > Details to see format, dimensions, file size, path, and style
 - **Statistics** — Overview of your catalog: icon counts, format breakdown, cache size, last index time
 - **Zero dependencies** — Pure Swift and SwiftUI. No Electron, no embedded browser, no bloat
 
+## Download
 
-## Requirements
+Grab the latest `.dmg` from the [Releases](https://github.com/oscarnogueira/simple-icon-catalog/releases) page.
+
+> **Note:** This app is not notarized. On first launch, right-click the app and select "Open", then confirm in the dialog. After that it will open normally.
+
+## Building from Source
+
+### Requirements
 
 - macOS 14 (Sonoma) or later
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for building from source)
+- Xcode 15+
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
 
-## Getting Started
+### Build & Run
 
 ```bash
-# Clone the repo
 git clone https://github.com/oscarnogueira/simple-icon-catalog.git
 cd simple-icon-catalog
 
-# Generate the Xcode project
 cd SimpleIconCatalog && xcodegen generate
 
-# Build and run
 open SimpleIconCatalog.xcodeproj
 # Press Cmd+R in Xcode
+```
+
+### Build DMG
+
+```bash
+./scripts/build-release.sh
 ```
 
 On first launch, open **Settings** (gear icon in the bottom-left corner or `Cmd+,`) and add the directories where your icons live.
@@ -54,7 +66,7 @@ On first launch, open **Settings** (gear icon in the bottom-left corner or `Cmd+
 ## How It Works
 
 1. **Scan** — Recursively finds all `.svg` and `.png` files in your configured directories
-2. **Analyze** — Extracts dimensions, detects if an SVG is monochrome or color
+2. **Analyze** — Extracts dimensions, detects if an SVG is monochrome or color (including inline CSS styles)
 3. **Classify** — Files that don't look like icons (oversized, tiny, wrong aspect ratio) go to quarantine
 4. **Cache** — Generates and caches thumbnails for fast browsing (`~/Library/Caches/IconViewer/`)
 5. **Watch** — Monitors directories for changes, only reprocesses what's new or modified
