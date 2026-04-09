@@ -12,7 +12,8 @@ struct ContentView: View {
                 IconGridView(
                     icons: viewModel.filteredIcons,
                     thumbnailSize: viewModel.thumbnailSize,
-                    cache: viewModel.cache
+                    cache: viewModel.cache,
+                    viewModel: viewModel
                 )
             }
 

@@ -4,12 +4,13 @@ struct IconCellView: View {
     let item: IconItem
     let thumbnailSize: CGFloat
     let cache: ThumbnailCache
+    @ObservedObject var viewModel: IconCatalogViewModel
 
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(spacing: 6) {
-            ZStack {
+            ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(colorScheme == .dark
                           ? Color.white.opacity(0.22)
@@ -18,6 +19,14 @@ struct IconCellView: View {
 
                 iconView
                     .padding(thumbnailSize * 0.15)
+
+                if viewModel.isFavorite(item) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: max(thumbnailSize * 0.12, 10)))
+                        .foregroundStyle(.yellow)
+                        .shadow(color: .black.opacity(0.3), radius: 1, y: 1)
+                        .padding(4)
+                }
             }
             .frame(width: thumbnailSize, height: thumbnailSize)
             .scaleEffect(isHovering ? 1.05 : 1.0)
@@ -40,6 +49,10 @@ struct IconCellView: View {
             }
             Button("Show in Finder") {
                 NSWorkspace.shared.activateFileViewerSelecting([item.fileURL])
+            }
+            Divider()
+            Button(viewModel.isFavorite(item) ? "Remove from Favorites" : "Add to Favorites") {
+                viewModel.toggleFavorite(item)
             }
             Divider()
             Button("Details...") {

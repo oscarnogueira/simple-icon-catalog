@@ -26,11 +26,36 @@ class IconCatalogViewModel: ObservableObject {
     @Published var lastIndexDuration: TimeInterval?
 
     @AppStorage("sourceDirectories") private var sourceDirectoriesData: Data = Data()
+    @AppStorage("favoritePaths") private var favoritePathsData: Data = Data()
 
     private let indexer: IconIndexer
     let cache: ThumbnailCache
     private var directoryWatcher: DirectoryWatcher?
     private var debounceTask: Task<Void, Never>?
+
+    private var favoritePaths: Set<String> {
+        get {
+            (try? JSONDecoder().decode(Set<String>.self, from: favoritePathsData)) ?? []
+        }
+        set {
+            favoritePathsData = (try? JSONEncoder().encode(newValue)) ?? Data()
+        }
+    }
+
+    func isFavorite(_ item: IconItem) -> Bool {
+        favoritePaths.contains(item.fileURL.path)
+    }
+
+    func toggleFavorite(_ item: IconItem) {
+        var paths = favoritePaths
+        if paths.contains(item.fileURL.path) {
+            paths.remove(item.fileURL.path)
+        } else {
+            paths.insert(item.fileURL.path)
+        }
+        favoritePaths = paths
+        objectWillChange.send()
+    }
 
     var filteredIcons: [IconItem] {
         var result = allIcons.filter { !$0.isQuarantined }
@@ -48,6 +73,14 @@ class IconCatalogViewModel: ObservableObject {
             result = result.filter {
                 $0.displayName.localizedCaseInsensitiveContains(searchText)
             }
+        }
+        // Favorites first
+        let favs = favoritePaths
+        result.sort { a, b in
+            let aFav = favs.contains(a.fileURL.path)
+            let bFav = favs.contains(b.fileURL.path)
+            if aFav == bFav { return false }
+            return aFav
         }
         return result
     }
