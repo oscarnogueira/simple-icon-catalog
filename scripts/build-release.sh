@@ -70,69 +70,69 @@ mkdir -p "$DMG_STAGING"
 cp -R "$APP_PATH" "$DMG_STAGING/"
 ln -s /Applications "$DMG_STAGING/Applications"
 
-# Create temporary read-write DMG (empty, then copy contents preserving symlinks)
+# Generate background image with install instructions
+DMG_BG="$BUILD_DIR/dmg-background.png"
+magick -size 540x340 xc:none \
+  -font "/System/Library/Fonts/Supplemental/Arial.ttf" -pointsize 15 \
+  -fill "rgba(160,160,160,0.9)" -gravity south \
+  -annotate +0+30 "Drag the app to your Applications folder to install" \
+  "$DMG_BG"
+mkdir -p "$DMG_STAGING/.background"
+cp "$DMG_BG" "$DMG_STAGING/.background/background.png"
+
+# Create temporary read-write DMG from staging folder
 DMG_TEMP="$BUILD_DIR/temp.dmg"
 hdiutil create \
   -volname "$APP_NAME" \
-  -size 20m \
-  -ov \
-  -type UDIF \
+  -srcfolder "$DMG_STAGING" \
+  -ov -format UDRW \
   -fs HFS+ \
   "$DMG_TEMP"
 
-# Generate background image with install instructions
-DMG_BG="$BUILD_DIR/dmg-background.png"
-magick -size 540x300 xc:none \
-  -font "/System/Library/Fonts/Supplemental/Arial.ttf" -pointsize 15 \
-  -fill "rgba(160,160,160,0.9)" -gravity north \
-  -annotate +0+20 "Drag the app to your Applications folder to install" \
-  "$DMG_BG"
+# Ensure no volume with this name is already mounted
+hdiutil detach "/Volumes/$APP_NAME" -quiet 2>/dev/null || true
 
-# Mount and copy contents (preserving symlinks)
+# Mount for styling
 MOUNT_DIR=$(hdiutil attach "$DMG_TEMP" -readwrite -noverify | grep "/Volumes/" | sed 's/.*\/Volumes/\/Volumes/')
 if [ -n "$MOUNT_DIR" ]; then
-  cp -R "$DMG_STAGING/." "$MOUNT_DIR/"
-  mkdir -p "$MOUNT_DIR/.background"
-  cp "$DMG_BG" "$MOUNT_DIR/.background/background.png"
-  hdiutil detach "$MOUNT_DIR" -quiet
-fi
+  echo "    Styling DMG at: $MOUNT_DIR"
 
-# Re-mount for styling
-MOUNT_DIR=$(hdiutil attach "$DMG_TEMP" -readwrite -noverify | grep "/Volumes/" | sed 's/.*\/Volumes/\/Volumes/')
-if [ -n "$MOUNT_DIR" ]; then
-  # Set icon size and view options via .DS_Store-free approach
-  # Use Finder AppleScript with retry for positioning
-  osascript <<APPLESCRIPT
-tell application "Finder"
-  tell disk "$APP_NAME"
-    open
-    set current view of container window to icon view
-    set toolbar visible of container window to false
-    set statusbar visible of container window to false
-    set bounds of container window to {100, 100, 640, 400}
-    set opts to icon view options of container window
-    set icon size of opts to 128
-    set arrangement of opts to not arranged
-    set background picture of opts to file ".background:background.png"
-    try
-      set position of item "$APP_NAME.app" of container window to {140, 150}
-    end try
-    try
-      set position of item "Applications" of container window to {400, 150}
-    end try
-    update without registering applications
-    delay 1
-    close
-  end tell
-end tell
-APPLESCRIPT
-  # Set volume icon if app icon exists
+  # Set volume icon
   if [ -f "$APP_PATH/Contents/Resources/AppIcon.icns" ]; then
     cp "$APP_PATH/Contents/Resources/AppIcon.icns" "$MOUNT_DIR/.VolumeIcon.icns"
     SetFile -c icnC "$MOUNT_DIR/.VolumeIcon.icns" 2>/dev/null || true
     SetFile -a C "$MOUNT_DIR" 2>/dev/null || true
   fi
+
+  # Apply Finder styling
+  osascript <<APPLESCRIPT
+tell application "Finder"
+  tell disk "$APP_NAME"
+    open
+    delay 3
+    set current view of container window to icon view
+    set toolbar visible of container window to false
+    set statusbar visible of container window to false
+    set the bounds of container window to {100, 100, 640, 440}
+    delay 1
+    set viewOptions to the icon view options of container window
+    set icon size of viewOptions to 128
+    set arrangement of viewOptions to not arranged
+    set background picture of viewOptions to file ".background:background.png"
+    delay 1
+    set position of item "$APP_NAME.app" of container window to {150, 160}
+    set position of item "Applications" of container window to {390, 160}
+    delay 1
+    update without registering applications
+    delay 2
+    close
+  end tell
+end tell
+APPLESCRIPT
+  echo "    Finder styling applied (exit: $?)"
+
   sync
+  sleep 2
   hdiutil detach "$MOUNT_DIR" -quiet
 fi
 
