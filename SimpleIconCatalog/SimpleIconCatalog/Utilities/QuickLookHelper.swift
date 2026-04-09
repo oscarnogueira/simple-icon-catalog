@@ -1,35 +1,39 @@
 import AppKit
 import Quartz
 
+class QuickLookPreviewItem: NSObject, QLPreviewItem {
+    let url: URL
+    init(url: URL) { self.url = url }
+    var previewItemURL: URL? { url }
+    var previewItemTitle: String? { url.lastPathComponent }
+}
+
 class QuickLookHelper: NSObject, QLPreviewPanelDataSource {
     static let shared = QuickLookHelper()
 
-    private var currentURL: URL?
+    private var currentItem: QuickLookPreviewItem?
 
     func preview(url: URL) {
-        currentURL = url
+        currentItem = QuickLookPreviewItem(url: url)
 
-        guard let panel = QLPreviewPanel.shared() else { return }
-        panel.dataSource = self
-        if panel.isVisible {
-            panel.reloadData()
-        } else {
-            panel.makeKeyAndOrderFront(nil)
+        DispatchQueue.main.async {
+            guard let panel = QLPreviewPanel.shared() else { return }
+            panel.dataSource = self
+            if panel.isVisible {
+                panel.reloadData()
+            } else {
+                panel.makeKeyAndOrderFront(nil)
+            }
         }
-    }
-
-    func dismiss() {
-        guard let panel = QLPreviewPanel.shared(), panel.isVisible else { return }
-        panel.orderOut(nil)
     }
 
     // MARK: - QLPreviewPanelDataSource
 
     func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
-        currentURL != nil ? 1 : 0
+        currentItem != nil ? 1 : 0
     }
 
     func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> (any QLPreviewItem)! {
-        currentURL as? NSURL
+        currentItem
     }
 }

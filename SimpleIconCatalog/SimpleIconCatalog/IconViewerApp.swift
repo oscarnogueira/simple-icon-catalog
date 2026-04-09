@@ -6,8 +6,10 @@ struct IconViewerApp: App {
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
 
     init() {
-        let mode = AppearanceMode(rawValue: UserDefaults.standard.string(forKey: "appearanceMode") ?? "system") ?? .system
-        mode.apply()
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            let mode = AppearanceMode(rawValue: UserDefaults.standard.string(forKey: "appearanceMode") ?? "system") ?? .system
+            mode.apply()
+        }
     }
 
     var body: some Scene {
