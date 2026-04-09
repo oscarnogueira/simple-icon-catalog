@@ -20,11 +20,13 @@ class IconIndexer {
     }
 
     /// Full index — scans everything from scratch.
-    func index(directories: [URL]) -> AsyncStream<IconItem> {
+    /// onTotalCount is called with the total file count before processing begins.
+    func index(directories: [URL], onTotalCount: (@Sendable (Int) -> Void)? = nil) -> AsyncStream<IconItem> {
         AsyncStream { continuation in
             Task {
                 do {
                     let files = try await scanner.scan(directories: directories)
+                    onTotalCount?(files.count)
 
                     for file in files {
                         let item = await processFile(file)

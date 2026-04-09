@@ -115,9 +115,15 @@ class IconCatalogViewModel: ObservableObject {
         allIcons = []
         let startTime = Date()
 
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             var count = 0
-            for await item in indexer.index(directories: sourceDirectories) {
+            let stream = indexer.index(directories: sourceDirectories) { total in
+                Task { @MainActor in
+                    self.progress.totalFiles = total
+                }
+            }
+            for await item in stream {
                 count += 1
                 allIcons.append(item)
                 progress.processedFiles = count
