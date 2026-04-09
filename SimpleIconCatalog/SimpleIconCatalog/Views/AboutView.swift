@@ -60,6 +60,9 @@ struct AboutView: View {
                 Text("Winter Garden, FL 🍊")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
+
+                Link("GitHub", destination: URL(string: "https://github.com/oscarnogueira/simple-icon-catalog")!)
+                    .font(.caption2)
             }
         }
         .padding(32)
