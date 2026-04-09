@@ -3,9 +3,22 @@ import SwiftUI
 struct PreferencesView: View {
     @ObservedObject var viewModel: IconCatalogViewModel
     @Environment(\.openWindow) private var openWindow
+    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
 
     var body: some View {
         Form {
+            Section("Appearance") {
+                Picker("Theme", selection: $appearanceMode) {
+                    ForEach(AppearanceMode.allCases, id: \.self) { mode in
+                        Text(mode.displayName).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: appearanceMode) {
+                    appearanceMode.apply()
+                }
+            }
+
             Section("Source Directories") {
                 List {
                     ForEach(viewModel.sourceDirectories, id: \.self) { dir in
@@ -76,6 +89,31 @@ struct PreferencesView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 480)
+        .frame(width: 450, height: 540)
+    }
+}
+
+enum AppearanceMode: String, CaseIterable {
+    case system
+    case light
+    case dark
+
+    var displayName: String {
+        switch self {
+        case .system: return "System"
+        case .light: return "Light"
+        case .dark: return "Dark"
+        }
+    }
+
+    func apply() {
+        switch self {
+        case .system:
+            NSApp.appearance = nil
+        case .light:
+            NSApp.appearance = NSAppearance(named: .aqua)
+        case .dark:
+            NSApp.appearance = NSAppearance(named: .darkAqua)
+        }
     }
 }

@@ -3,6 +3,12 @@ import SwiftUI
 @main
 struct IconViewerApp: App {
     @StateObject private var viewModel = IconCatalogViewModel()
+    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
+
+    init() {
+        let mode = AppearanceMode(rawValue: UserDefaults.standard.string(forKey: "appearanceMode") ?? "system") ?? .system
+        mode.apply()
+    }
 
     var body: some Scene {
         WindowGroup {
