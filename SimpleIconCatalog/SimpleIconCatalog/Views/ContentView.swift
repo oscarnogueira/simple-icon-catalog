@@ -105,6 +105,17 @@ struct ContentView: View {
             isSearchFocused = true
             return .handled
         }
+        .onKeyPress(.escape) {
+            if !viewModel.searchText.isEmpty {
+                viewModel.searchText = ""
+                return .handled
+            }
+            if isSearchFocused {
+                isSearchFocused = false
+                return .handled
+            }
+            return .ignored
+        }
     }
 
     private var emptyState: some View {
