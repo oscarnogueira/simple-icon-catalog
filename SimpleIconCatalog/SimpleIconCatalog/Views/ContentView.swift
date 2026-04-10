@@ -74,7 +74,20 @@ struct ContentView: View {
             .padding(.horizontal)
             .padding(.vertical, 6)
         }
+        .navigationTitle("Simple Icon Catalog")
+        .toolbarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 6) {
+                    Image(nsImage: {
+                        let icon = NSApp.applicationIconImage ?? NSImage()
+                        icon.size = NSSize(width: 20, height: 20)
+                        return icon
+                    }())
+                    Text("Simple Icon Catalog")
+                        .font(.headline)
+                }
+            }
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
                     // Style filter
@@ -142,24 +155,6 @@ struct ContentView: View {
         .onAppear {
             viewModel.loadAndSync()
             viewModel.startWatching()
-
-            // Set window title bar icon
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                if let window = NSApp.windows.first(where: { $0.title == "Simple Icon Catalog" || $0.isKeyWindow }) {
-                    let icon = NSApp.applicationIconImage ?? NSImage()
-                    let size = NSSize(width: 24, height: 24)
-                    let resized = NSImage(size: size)
-                    resized.lockFocus()
-                    icon.draw(in: NSRect(origin: .zero, size: size))
-                    resized.unlockFocus()
-
-                    // Use representedURL trick to show icon in title bar
-                    let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("SimpleIconCatalog")
-                    try? FileManager.default.createDirectory(at: tempURL, withIntermediateDirectories: true)
-                    window.representedURL = tempURL
-                    window.standardWindowButton(.documentIconButton)?.image = resized
-                }
-            }
         }
         .onKeyPress("/") {
             isSearchFocused = true
