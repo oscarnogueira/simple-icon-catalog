@@ -10,6 +10,29 @@ struct ContentView: View {
                 .frame(minWidth: 180)
         } detail: {
         VStack(spacing: 0) {
+            // Search bar (inline, not in toolbar — so @FocusState works)
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(.secondary)
+                TextField("Filter (/ or Cmd+F)", text: $viewModel.searchText)
+                    .textFieldStyle(.plain)
+                    .focused($isSearchFocused)
+                if !viewModel.searchText.isEmpty {
+                    Button {
+                        viewModel.searchText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(.bar)
+
+            Divider()
+
             // Grid
             if viewModel.filteredIcons.isEmpty && !viewModel.progress.isIndexing {
                 emptyState
@@ -54,12 +77,6 @@ struct ContentView: View {
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
-                    // Search
-                    TextField("Filter (/ or Cmd+F)", text: $viewModel.searchText)
-                        .textFieldStyle(.roundedBorder)
-                        .frame(width: 200)
-                        .focused($isSearchFocused)
-
                     // Style filter
                     Picker("", selection: $viewModel.styleFilter) {
                         ForEach(StyleFilter.allCases, id: \.self) { filter in
