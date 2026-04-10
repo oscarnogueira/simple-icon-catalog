@@ -12,11 +12,6 @@ struct ContentView: View {
         VStack(spacing: 0) {
             // Search bar (inline, not in toolbar — so @FocusState works)
             HStack(spacing: 8) {
-                Image(nsImage: NSApp.applicationIconImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 18, height: 18)
-
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
                 TextField("Filter (/ or ⌘F)", text: $viewModel.searchText)
@@ -79,7 +74,18 @@ struct ContentView: View {
             .padding(.horizontal)
             .padding(.vertical, 6)
         }
+        .navigationTitle("")
         .toolbar {
+            ToolbarItem(placement: .navigation) {
+                HStack(spacing: 6) {
+                    Image(nsImage: NSApp.applicationIconImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                    Text("Simple Icon Catalog")
+                        .font(.headline)
+                }
+            }
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
                     // Style filter
