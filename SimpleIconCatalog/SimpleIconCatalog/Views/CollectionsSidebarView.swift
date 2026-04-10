@@ -25,9 +25,8 @@ struct CollectionsSidebarView: View {
                 viewModel.selectedCollectionID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
             }
 
-            if !viewModel.collections.isEmpty {
-                Section("Collections") {
-                    ForEach(viewModel.collections) { collection in
+            Section {
+                ForEach(viewModel.collections) { collection in
                         collectionRow(collection)
                             .tag(collection.id as UUID?)
                             .onTapGesture {
@@ -48,21 +47,21 @@ struct CollectionsSidebarView: View {
                                 }
                             }
                     }
+            } header: {
+                HStack {
+                    Text("Collections")
+                    Spacer()
+                    Button {
+                        showNewCollection = true
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.caption)
+                    }
+                    .buttonStyle(.borderless)
                 }
             }
         }
         .listStyle(.sidebar)
-        .safeAreaInset(edge: .bottom) {
-            Button {
-                showNewCollection = true
-            } label: {
-                Label("New Collection", systemImage: "plus")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .buttonStyle(.borderless)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-        }
         .sheet(isPresented: $showNewCollection) {
             CollectionEditorView(title: "New Collection") { name, symbol, colorHex in
                 viewModel.createCollection(name: name, symbol: symbol, colorHex: colorHex)
