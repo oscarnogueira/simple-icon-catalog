@@ -10,19 +10,8 @@ struct ContentView: View {
                 .frame(minWidth: 180)
         } detail: {
         VStack(spacing: 0) {
-            // Title + Search bar
+            // Search bar
             HStack(spacing: 8) {
-                Image(nsImage: NSApp.applicationIconImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24, height: 24)
-                Text("Simple Icon Catalog")
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-                    .layoutPriority(1)
-
-                Spacer()
-
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
                 TextField("Filter (/ or ⌘F)", text: $viewModel.searchText)
@@ -153,6 +142,24 @@ struct ContentView: View {
         .onAppear {
             viewModel.loadAndSync()
             viewModel.startWatching()
+
+            // Set window title bar icon
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if let window = NSApp.windows.first(where: { $0.title == "Simple Icon Catalog" || $0.isKeyWindow }) {
+                    let icon = NSApp.applicationIconImage ?? NSImage()
+                    let size = NSSize(width: 24, height: 24)
+                    let resized = NSImage(size: size)
+                    resized.lockFocus()
+                    icon.draw(in: NSRect(origin: .zero, size: size))
+                    resized.unlockFocus()
+
+                    // Use representedURL trick to show icon in title bar
+                    let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("SimpleIconCatalog")
+                    try? FileManager.default.createDirectory(at: tempURL, withIntermediateDirectories: true)
+                    window.representedURL = tempURL
+                    window.standardWindowButton(.documentIconButton)?.image = resized
+                }
+            }
         }
         .onKeyPress("/") {
             isSearchFocused = true
