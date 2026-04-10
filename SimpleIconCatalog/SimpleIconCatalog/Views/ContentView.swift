@@ -49,14 +49,6 @@ struct ContentView: View {
 
             // Footer
             HStack(spacing: 8) {
-                SettingsLink {
-                    Image(systemName: "gearshape")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.borderless)
-                .help("Settings")
-
                 Text(viewModel.iconCount)
                     .font(.caption)
                     .foregroundStyle(.secondary)

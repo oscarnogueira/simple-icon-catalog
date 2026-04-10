@@ -65,6 +65,14 @@ struct CollectionsSidebarView: View {
             }
         }
         .listStyle(.sidebar)
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                SettingsLink {
+                    Image(systemName: "gearshape")
+                }
+                .help("Settings")
+            }
+        }
         .sheet(isPresented: $showNewCollection) {
             CollectionEditorView(title: "New Collection") { name, symbol, colorHex in
                 viewModel.createCollection(name: name, symbol: symbol, colorHex: colorHex)
