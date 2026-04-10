@@ -14,7 +14,7 @@ struct ContentView: View {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                TextField("Filter (/ or Cmd+F)", text: $viewModel.searchText)
+                TextField("Filter (/ or ⌘F)", text: $viewModel.searchText)
                     .textFieldStyle(.plain)
                     .focused($isSearchFocused)
                 if !viewModel.searchText.isEmpty {
