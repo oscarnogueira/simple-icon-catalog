@@ -66,7 +66,7 @@ struct CollectionsSidebarView: View {
         }
         .listStyle(.sidebar)
         .toolbar {
-            ToolbarItem(placement: .automatic) {
+            ToolbarItem(placement: .primaryAction) {
                 SettingsLink {
                     Image(systemName: "gearshape")
                 }
