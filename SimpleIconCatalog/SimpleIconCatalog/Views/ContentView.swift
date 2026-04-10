@@ -74,7 +74,14 @@ struct ContentView: View {
             .padding(.horizontal)
             .padding(.vertical, 6)
         }
+        .navigationTitle("Simple Icon Catalog")
         .toolbar {
+            ToolbarItem(placement: .navigation) {
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+            }
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
                     // Style filter
