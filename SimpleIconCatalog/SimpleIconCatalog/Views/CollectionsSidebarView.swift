@@ -60,6 +60,7 @@ struct CollectionsSidebarView: View {
                     }
                     .buttonStyle(.borderless)
                     .help("New Collection")
+                    .padding(.trailing, 4)
                 }
             }
         }
