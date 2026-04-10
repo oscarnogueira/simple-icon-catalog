@@ -48,16 +48,18 @@ struct CollectionsSidebarView: View {
                             }
                     }
             } header: {
-                HStack {
+                HStack(alignment: .center) {
                     Text("Collections")
                     Spacer()
                     Button {
                         showNewCollection = true
                     } label: {
-                        Image(systemName: "plus")
-                            .font(.caption)
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.secondary)
                     }
                     .buttonStyle(.borderless)
+                    .help("New Collection")
                 }
             }
         }
