@@ -160,19 +160,30 @@ if [[ "${1:-}" == "--release" ]]; then
     exit 1
   fi
 
-  gh release create "v$VERSION" \
-    "$DMG_PATH" \
-    --title "$APP_NAME v$VERSION" \
-    --notes "$(cat <<EOF
-## $APP_NAME v$VERSION
+  # Extract release notes from CHANGELOG.md for this version
+  REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+  CHANGELOG="$REPO_ROOT/CHANGELOG.md"
+  RELEASE_NOTES=""
+  if [ -f "$CHANGELOG" ]; then
+    # Extract the section for this version (between ## [version] and the next ## [)
+    RELEASE_NOTES=$(awk "/^## \\[$VERSION\\]/{found=1; next} /^## \\[/{if(found) exit} found{print}" "$CHANGELOG")
+  fi
+
+  # Build final notes with changelog + download instructions
+  NOTES="## $APP_NAME v$VERSION
+${RELEASE_NOTES:+
+$RELEASE_NOTES}
 
 ### Download
 Download **SimpleIconCatalog-$VERSION.dmg**, open it, and drag the app to your Applications folder.
 
 ### Note
-This app is not notarized. On first launch, right-click the app and select "Open", then confirm in the dialog. After that it will open normally.
-EOF
-)"
+This app is not notarized. On first launch, right-click the app and select \"Open\", then confirm in the dialog."
+
+  gh release create "v$VERSION" \
+    "$DMG_PATH" \
+    --title "$APP_NAME v$VERSION" \
+    --notes "$NOTES"
 
   echo "==> Release created: https://github.com/oscarnogueira/simple-icon-catalog/releases/tag/v$VERSION"
 else
