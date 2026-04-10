@@ -26,6 +26,12 @@ struct SimpleIconCatalogApp: App {
                 OpenWindowButton(id: "quarantine", label: "Quarantine...")
                     .keyboardShortcut("q", modifiers: [.command, .shift])
             }
+            CommandGroup(after: .textEditing) {
+                Button("Find Icons") {
+                    viewModel.focusSearch = true
+                }
+                .keyboardShortcut("f", modifiers: [.command])
+            }
         }
 
         Settings {

@@ -55,7 +55,7 @@ struct ContentView: View {
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
                     // Search
-                    TextField("Filter (/)", text: $viewModel.searchText)
+                    TextField("Filter (/ or Cmd+F)", text: $viewModel.searchText)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 200)
                         .focused($isSearchFocused)
@@ -129,6 +129,12 @@ struct ContentView: View {
         .onKeyPress("/") {
             isSearchFocused = true
             return .handled
+        }
+        .onChange(of: viewModel.focusSearch) {
+            if viewModel.focusSearch {
+                isSearchFocused = true
+                viewModel.focusSearch = false
+            }
         }
         .onKeyPress(.space) {
             if let icon = viewModel.selectedIcon {
