@@ -132,6 +132,14 @@ struct ContentView: View {
             }
         }
         } // NavigationSplitView
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                SettingsLink {
+                    Image(systemName: "gearshape")
+                }
+                .help("Settings")
+            }
+        }
         .onAppear {
             viewModel.loadAndSync()
             viewModel.startWatching()

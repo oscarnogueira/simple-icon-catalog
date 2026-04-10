@@ -65,20 +65,6 @@ struct CollectionsSidebarView: View {
             }
         }
         .listStyle(.sidebar)
-        .safeAreaInset(edge: .bottom) {
-            HStack {
-                SettingsLink {
-                    Image(systemName: "gearshape")
-                        .font(.system(size: 14))
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.borderless)
-                .help("Settings")
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-        }
         .sheet(isPresented: $showNewCollection) {
             CollectionEditorView(title: "New Collection") { name, symbol, colorHex in
                 viewModel.createCollection(name: name, symbol: symbol, colorHex: colorHex)
