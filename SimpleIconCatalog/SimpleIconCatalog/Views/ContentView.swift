@@ -75,19 +75,7 @@ struct ContentView: View {
             .padding(.vertical, 6)
         }
         .navigationTitle("Simple Icon Catalog")
-        .toolbarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(nsImage: {
-                        let icon = NSApp.applicationIconImage ?? NSImage()
-                        icon.size = NSSize(width: 20, height: 20)
-                        return icon
-                    }())
-                    Text("Simple Icon Catalog")
-                        .font(.headline)
-                }
-            }
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
                     // Style filter
