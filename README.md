@@ -22,6 +22,7 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 - **Instant filter** — Search by filename (`/` to focus), filter by style (color/monochrome) or format (SVG/PNG). `Esc` clears the search
 - **Drag & drop** — Drag icons directly from the grid into Keynote, PowerPoint, or any other app
 - **Copy & paste** — Right-click any icon, copy as high-res PNG, paste directly into your presentation
+- **Collections** — Organize icons into virtual folders (sidebar) with custom name, SF Symbol, and color. Add via right-click or drag & drop
 - **Favorites** — Mark icons as favorites (right-click > Add to Favorites) — they appear first in the grid with a star badge and persist across sessions
 - **Sort** — Sort by name, modification date, or file size. Favorites always stay on top
 - **Quick Look** — Click an icon to select it, press `Space` for native macOS Quick Look preview

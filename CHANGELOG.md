@@ -2,6 +2,19 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.1.0] - 2026-04-10
+
+### Added
+- **Collections** — organize icons into virtual folders without moving files
+- Sidebar with "All Icons", "Favorites", and user-created collections
+- Each collection has a custom name, SF Symbol icon, and color
+- Create, edit, and delete collections from the sidebar
+- Add icons to collections via right-click > "Add to Collection" submenu (with checkmarks)
+- Drag & drop icons from the grid onto sidebar collections
+- Remove icons from a collection when viewing it
+- Badge counts showing number of icons per collection
+- Collections and memberships persisted in SQLite
+
 ## [1.0.3] - 2026-04-09
 
 ### Changed
