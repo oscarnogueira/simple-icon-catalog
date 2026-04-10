@@ -32,11 +32,14 @@ class IconCatalogViewModel: ObservableObject {
     @Published var progress = IndexingProgress()
     @Published var lastIndexedAt: Date?
     @Published var lastIndexDuration: TimeInterval?
+    @Published var collections: [IconCollection] = []
+    @Published var selectedCollectionID: UUID? = nil
+    @Published var collectionMemberships: [UUID: Set<String>] = [:]
 
     @AppStorage("sourceDirectories") private var sourceDirectoriesData: Data = Data()
 
     private let indexer: IconIndexer
-    private let indexStore = IndexStore()
+    let indexStore = IndexStore()
     let cache: ThumbnailCache
     private var directoryWatcher: DirectoryWatcher?
     private var debounceTask: Task<Void, Never>?
@@ -60,6 +63,17 @@ class IconCatalogViewModel: ObservableObject {
 
     var filteredIcons: [IconItem] {
         var result = allIcons.filter { !$0.isQuarantined }
+        // Collection filter
+        if let collectionID = selectedCollectionID {
+            if collectionID == UUID(uuidString: "00000000-0000-0000-0000-000000000000")! {
+                // Favorites pseudo-collection
+                result = result.filter { _favoritePaths.contains($0.fileURL.path) }
+            } else if let members = collectionMemberships[collectionID] {
+                result = result.filter { members.contains($0.fileURL.path) }
+            } else {
+                result = []
+            }
+        }
         switch styleFilter {
         case .all: break
         case .color: result = result.filter { !$0.isMonochrome }
@@ -125,6 +139,10 @@ class IconCatalogViewModel: ObservableObject {
 
     /// Called on app launch. Loads persisted index instantly, then runs incremental sync.
     func loadAndSync() {
+        // Load collections regardless of directories
+        collections = indexStore.loadCollections()
+        collectionMemberships = indexStore.loadAllMemberships()
+
         guard !sourceDirectories.isEmpty else { return }
 
         // Load persisted index from SQLite (instant UI)
@@ -188,6 +206,48 @@ class IconCatalogViewModel: ObservableObject {
             allIcons[index].quarantineReason = nil
             persistIndex()
         }
+    }
+
+    // MARK: - Collections
+
+    func createCollection(name: String, symbol: String, colorHex: String) {
+        let collection = IconCollection(name: name, symbol: symbol, colorHex: colorHex, sortOrder: collections.count)
+        indexStore.saveCollection(collection)
+        collections.append(collection)
+    }
+
+    func updateCollection(_ collection: IconCollection) {
+        indexStore.saveCollection(collection)
+        if let idx = collections.firstIndex(where: { $0.id == collection.id }) {
+            collections[idx] = collection
+        }
+    }
+
+    func deleteCollection(id: UUID) {
+        indexStore.deleteCollection(id: id)
+        collections.removeAll { $0.id == id }
+        collectionMemberships.removeValue(forKey: id)
+        if selectedCollectionID == id {
+            selectedCollectionID = nil
+        }
+    }
+
+    func addToCollection(iconPath: String, collectionID: UUID) {
+        indexStore.addIcon(path: iconPath, toCollection: collectionID)
+        collectionMemberships[collectionID, default: []].insert(iconPath)
+    }
+
+    func removeFromCollection(iconPath: String, collectionID: UUID) {
+        indexStore.removeIcon(path: iconPath, fromCollection: collectionID)
+        collectionMemberships[collectionID]?.remove(iconPath)
+    }
+
+    func collectionsContaining(iconPath: String) -> [IconCollection] {
+        collections.filter { collectionMemberships[$0.id]?.contains(iconPath) == true }
+    }
+
+    func memberCount(for collectionID: UUID) -> Int {
+        collectionMemberships[collectionID]?.count ?? 0
     }
 
     func clearCache() throws {

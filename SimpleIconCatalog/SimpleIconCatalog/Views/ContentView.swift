@@ -5,6 +5,10 @@ struct ContentView: View {
     @FocusState private var isSearchFocused: Bool
 
     var body: some View {
+        NavigationSplitView {
+            CollectionsSidebarView(viewModel: viewModel)
+                .frame(minWidth: 180)
+        } detail: {
         VStack(spacing: 0) {
             // Grid
             if viewModel.filteredIcons.isEmpty && !viewModel.progress.isIndexing {
@@ -117,6 +121,7 @@ struct ContentView: View {
                 }
             }
         }
+        } // NavigationSplitView
         .onAppear {
             viewModel.loadAndSync()
             viewModel.startWatching()

@@ -47,6 +47,26 @@ final class IndexStore {
         """)
         // Migration: add is_favorite column if missing (for upgrades)
         execute("ALTER TABLE icons ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0;", ignoreError: true)
+
+        execute("""
+            CREATE TABLE IF NOT EXISTS collections (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                symbol TEXT NOT NULL,
+                color_hex TEXT NOT NULL,
+                sort_order INTEGER NOT NULL DEFAULT 0
+            );
+        """)
+
+        execute("""
+            CREATE TABLE IF NOT EXISTS collection_members (
+                collection_id TEXT NOT NULL,
+                icon_path TEXT NOT NULL,
+                PRIMARY KEY (collection_id, icon_path)
+            );
+        """)
+        execute("CREATE INDEX IF NOT EXISTS idx_cm_collection ON collection_members(collection_id);", ignoreError: true)
+        execute("CREATE INDEX IF NOT EXISTS idx_cm_path ON collection_members(icon_path);", ignoreError: true)
     }
 
     // MARK: - Icons
@@ -141,6 +161,102 @@ final class IndexStore {
         sqlite3_bind_text(stmt, 2, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
         sqlite3_step(stmt)
         sqlite3_finalize(stmt)
+    }
+
+    // MARK: - Collections
+
+    func saveCollection(_ c: IconCollection) {
+        let sql = "INSERT OR REPLACE INTO collections (id, name, symbol, color_hex, sort_order) VALUES (?, ?, ?, ?, ?);"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return }
+        let idStr = c.id.uuidString
+        sqlite3_bind_text(stmt, 1, idStr, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_bind_text(stmt, 2, c.name, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_bind_text(stmt, 3, c.symbol, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_bind_text(stmt, 4, c.colorHex, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_bind_int(stmt, 5, Int32(c.sortOrder))
+        sqlite3_step(stmt)
+        sqlite3_finalize(stmt)
+    }
+
+    func deleteCollection(id: UUID) {
+        let idStr = id.uuidString
+        execute("DELETE FROM collection_members WHERE collection_id = '\(idStr)';")
+        execute("DELETE FROM collections WHERE id = '\(idStr)';")
+    }
+
+    func loadCollections() -> [IconCollection] {
+        let sql = "SELECT id, name, symbol, color_hex, sort_order FROM collections ORDER BY sort_order;"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return [] }
+        defer { sqlite3_finalize(stmt) }
+
+        var result: [IconCollection] = []
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let idStr = String(cString: sqlite3_column_text(stmt, 0))
+            guard let id = UUID(uuidString: idStr) else { continue }
+            let name = String(cString: sqlite3_column_text(stmt, 1))
+            let symbol = String(cString: sqlite3_column_text(stmt, 2))
+            let colorHex = String(cString: sqlite3_column_text(stmt, 3))
+            let sortOrder = Int(sqlite3_column_int(stmt, 4))
+            result.append(IconCollection(id: id, name: name, symbol: symbol, colorHex: colorHex, sortOrder: sortOrder))
+        }
+        return result
+    }
+
+    // MARK: - Collection Membership
+
+    func addIcon(path: String, toCollection collectionID: UUID) {
+        let sql = "INSERT OR IGNORE INTO collection_members (collection_id, icon_path) VALUES (?, ?);"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return }
+        let idStr = collectionID.uuidString
+        sqlite3_bind_text(stmt, 1, idStr, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_bind_text(stmt, 2, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_step(stmt)
+        sqlite3_finalize(stmt)
+    }
+
+    func removeIcon(path: String, fromCollection collectionID: UUID) {
+        let sql = "DELETE FROM collection_members WHERE collection_id = ? AND icon_path = ?;"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return }
+        let idStr = collectionID.uuidString
+        sqlite3_bind_text(stmt, 1, idStr, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_bind_text(stmt, 2, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        sqlite3_step(stmt)
+        sqlite3_finalize(stmt)
+    }
+
+    func iconPaths(inCollection collectionID: UUID) -> Set<String> {
+        let sql = "SELECT icon_path FROM collection_members WHERE collection_id = ?;"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return [] }
+        let idStr = collectionID.uuidString
+        sqlite3_bind_text(stmt, 1, idStr, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+        defer { sqlite3_finalize(stmt) }
+
+        var paths: Set<String> = []
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            paths.insert(String(cString: sqlite3_column_text(stmt, 0)))
+        }
+        return paths
+    }
+
+    func loadAllMemberships() -> [UUID: Set<String>] {
+        let sql = "SELECT collection_id, icon_path FROM collection_members;"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return [:] }
+        defer { sqlite3_finalize(stmt) }
+
+        var result: [UUID: Set<String>] = [:]
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let idStr = String(cString: sqlite3_column_text(stmt, 0))
+            let path = String(cString: sqlite3_column_text(stmt, 1))
+            guard let id = UUID(uuidString: idStr) else { continue }
+            result[id, default: []].insert(path)
+        }
+        return result
     }
 
     // MARK: - Maintenance

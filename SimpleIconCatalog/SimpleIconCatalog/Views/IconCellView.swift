@@ -61,6 +61,36 @@ struct IconCellView: View {
             Button(viewModel.isFavorite(item) ? "Remove from Favorites" : "Add to Favorites") {
                 viewModel.toggleFavorite(item)
             }
+            if !viewModel.collections.isEmpty {
+                Menu("Add to Collection") {
+                    ForEach(viewModel.collections) { collection in
+                        let isInCollection = viewModel.collectionsContaining(iconPath: item.fileURL.path).contains(where: { $0.id == collection.id })
+                        Button {
+                            if isInCollection {
+                                viewModel.removeFromCollection(iconPath: item.fileURL.path, collectionID: collection.id)
+                            } else {
+                                viewModel.addToCollection(iconPath: item.fileURL.path, collectionID: collection.id)
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: collection.symbol)
+                                    .foregroundStyle(collection.color)
+                                Text(collection.name)
+                                if isInCollection {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if let collectionID = viewModel.selectedCollectionID,
+               collectionID != UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
+               viewModel.collections.contains(where: { $0.id == collectionID }) {
+                Button("Remove from Collection") {
+                    viewModel.removeFromCollection(iconPath: item.fileURL.path, collectionID: collectionID)
+                }
+            }
             Divider()
             Button("Details...") {
                 showDetail = true
