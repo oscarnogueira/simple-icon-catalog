@@ -87,9 +87,43 @@ struct IconDetailView: View {
                 }
             }
             .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .padding(.bottom, 12)
+
+            // Background previews
+            VStack(spacing: 6) {
+                Text("Preview on backgrounds")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                HStack(spacing: 8) {
+                    ForEach(backgroundOptions, id: \.label) { option in
+                        VStack(spacing: 4) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(option.color)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 0.5)
+                                    )
+
+                                preview
+                                    .resizable()
+                                    .scaledToFit()
+                                    .padding(8)
+                            }
+                            .frame(width: 56, height: 56)
+
+                            Text(option.label)
+                                .font(.system(size: 9))
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 20)
         }
-        .frame(width: 520, height: 280)
+        .frame(width: 520, height: 390)
         .interactiveDismissDisabled(false)
     }
 
@@ -132,5 +166,17 @@ struct IconDetailView: View {
         } else {
             return "Color"
         }
+    }
+
+    private var backgroundOptions: [(label: String, color: Color)] {
+        [
+            ("White", .white),
+            ("Light", Color(hex: "E8E8E8")),
+            ("Gray", Color(hex: "808080")),
+            ("Dark", Color(hex: "2D2D2D")),
+            ("Black", .black),
+            ("Blue", Color(hex: "1A3A5C")),
+            ("Red", Color(hex: "8B1A1A")),
+        ]
     }
 }
