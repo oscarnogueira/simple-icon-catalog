@@ -2,6 +2,18 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.1.1] - 2026-04-10
+
+### Added
+- Background preview strip in icon detail view — see how icons look on 7 different backgrounds (white, light, gray, dark, black, blue, red)
+- `⌘F` as global keyboard shortcut to focus search (works from anywhere in the app)
+- Settings gear icon in window toolbar, visible even with sidebar collapsed
+
+### Fixed
+- Search field focus (`/` and `⌘F`) now works reliably — moved from toolbar to inline bar
+- Collections section "+" button size and alignment
+- Search bar cleaned up — only search-related elements
+
 ## [1.1.0] - 2026-04-10
 
 ### Added
