@@ -151,6 +151,27 @@ final class IndexStore {
         return icons.isEmpty ? nil : (icons, favorites)
     }
 
+    // MARK: - Delete
+
+    func deleteIcon(path: String) {
+        execute("BEGIN TRANSACTION;")
+        let deleteIconSQL = "DELETE FROM icons WHERE path = ?;"
+        var stmt: OpaquePointer?
+        if sqlite3_prepare_v2(db, deleteIconSQL, -1, &stmt, nil) == SQLITE_OK {
+            sqlite3_bind_text(stmt, 1, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_step(stmt)
+            sqlite3_finalize(stmt)
+        }
+        let deleteMembershipsSQL = "DELETE FROM collection_members WHERE icon_path = ?;"
+        var stmt2: OpaquePointer?
+        if sqlite3_prepare_v2(db, deleteMembershipsSQL, -1, &stmt2, nil) == SQLITE_OK {
+            sqlite3_bind_text(stmt2, 1, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_step(stmt2)
+            sqlite3_finalize(stmt2)
+        }
+        execute("COMMIT;")
+    }
+
     // MARK: - Favorites
 
     func setFavorite(path: String, isFavorite: Bool) {
