@@ -16,8 +16,12 @@ class DirectoryWatcher {
 
         for directory in directories {
             let fd = open(directory.path, O_EVTONLY)
-            guard fd >= 0 else { continue }
+            guard fd >= 0 else {
+                AppLog.watcher.error("Failed to open \(directory.path, privacy: .public) for watching")
+                continue
+            }
             fileDescriptors.append(fd)
+            AppLog.watcher.notice("Watching \(directory.path, privacy: .public)")
 
             let source = DispatchSource.makeFileSystemObjectSource(
                 fileDescriptor: fd,
@@ -25,7 +29,9 @@ class DirectoryWatcher {
                 queue: .main
             )
 
+            let dirPath = directory.path
             source.setEventHandler { [weak self] in
+                AppLog.watcher.debug("Change detected in \(dirPath, privacy: .public)")
                 self?.onChange()
             }
 
