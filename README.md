@@ -26,6 +26,7 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 - **Instant filter** — Search by filename (`/` to focus), filter by style (color/monochrome) or format (SVG/PNG). `Esc` clears the search
 - **Drag & drop** — Drag icons directly from the grid into Keynote, PowerPoint, or any other app
 - **Copy & paste** — Right-click any icon, copy as high-res PNG, paste directly into your presentation
+- **Copy Colored** — For monochrome SVGs, right-click > Copy Colored… to pick any tint and copy a recolored 1024px PNG. Live preview over a configurable background so you can simulate your slide, with recent colors remembered for reuse
 - **Collections** — Organize icons into virtual folders (sidebar) with custom name, SF Symbol, and color. Add via right-click or drag & drop
 - **Multi-select** — `⌘+Click` to toggle individual icons, `⇧+Click` to select a range, `⌘A` to select all filtered; drag a selection onto a collection or into Keynote/Finder, or use the right-click menu to favorite or add to collections in bulk
 - **Favorites** — Mark icons as favorites (right-click > Add to Favorites) — they appear first in the grid with a star badge and persist across sessions
@@ -115,13 +116,13 @@ Or open **Console.app** and filter by the subsystem to inspect launch events, in
 SimpleIconCatalog/
 ├── Models/          → IconItem, IconCollection, DuplicateGroup,
 │                      QuarantineReason, IndexingProgress
-├── Services/        → DirectoryScanner, SVGAnalyzer, QuarantineClassifier,
-│                      ThumbnailCache, ThumbnailGenerator, IconIndexer,
-│                      DirectoryWatcher, IndexStore
+├── Services/        → DirectoryScanner, SVGAnalyzer, SVGRecolorer,
+│                      QuarantineClassifier, ThumbnailCache, ThumbnailGenerator,
+│                      IconIndexer, DirectoryWatcher, IndexStore
 ├── ViewModels/      → IconCatalogViewModel, StatisticsViewModel
 ├── Views/           → ContentView, IconGridView, IconCellView, IconDetailView,
-│                      CollectionsSidebarView, DuplicatesView, PreferencesView,
-│                      QuarantineView, StatisticsView, AboutView
+│                      CollectionsSidebarView, DuplicatesView, RecolorSheetView,
+│                      PreferencesView, QuarantineView, StatisticsView, AboutView
 └── Utilities/       → PasteboardHelper, AppLog, LegacyMigration
 ```
 

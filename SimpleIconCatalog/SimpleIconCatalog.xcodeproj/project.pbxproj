@@ -19,9 +19,11 @@
 		39CAB996BA2F987DE3C9205C /* IconCatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14756CB3DDCC124539CFC88D /* IconCatalogViewModel.swift */; };
 		3C48F6ED111E588EF682EB11 /* CollectionsSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09048E2427A2FD93244660 /* CollectionsSidebarView.swift */; };
 		3D75D5CF47ED74C941058751 /* LegacyMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D87A06F1F29968839B083A /* LegacyMigration.swift */; };
+		3D952AA052E047D32E861D1F /* SVGRecolorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3E071877A93D1929983700 /* SVGRecolorer.swift */; };
 		414414962D4F45296D76B7C4 /* IconIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C6CEF1E0560ADDD9690F2 /* IconIndexer.swift */; };
 		444A25C6A1123EFE78D9075E /* DirectoryScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C124CDF09EBF60A9FD6D06 /* DirectoryScanner.swift */; };
 		44EEEE82860867D9C7F5FC01 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95254BC605C7149AFD8DBF93 /* ThumbnailGenerator.swift */; };
+		49FB97085993DFCE07603D51 /* RecolorSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F0187398972328D1A8BB0D /* RecolorSheetView.swift */; };
 		4D9DBCCE43ADDAEF4D0BD59B /* DirectoryScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF1F993FCBAB6E5C240564E /* DirectoryScannerTests.swift */; };
 		4FDB4D743B576AE7EB60DAAA /* IconIndexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A25294FB0848B239D2CEEF /* IconIndexerTests.swift */; };
 		53001C0C8D20282E24164219 /* DuplicatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876B67EE36FCB4D1CF287ABF /* DuplicatesView.swift */; };
@@ -62,6 +64,7 @@
 		025C267D6C2E57ECEB61D288 /* ThumbnailCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCacheTests.swift; sourceTree = "<group>"; };
 		04A25294FB0848B239D2CEEF /* IconIndexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconIndexerTests.swift; sourceTree = "<group>"; };
 		09C124CDF09EBF60A9FD6D06 /* DirectoryScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryScanner.swift; sourceTree = "<group>"; };
+		0C3E071877A93D1929983700 /* SVGRecolorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGRecolorer.swift; sourceTree = "<group>"; };
 		0EF80762ABFB7344129C9FDB /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		14756CB3DDCC124539CFC88D /* IconCatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCatalogViewModel.swift; sourceTree = "<group>"; };
 		1765117400E2BC99D4D29D6E /* IconCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCellView.swift; sourceTree = "<group>"; };
@@ -91,6 +94,7 @@
 		B04DB44D924BBB0C65D23CD5 /* IndexingProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexingProgress.swift; sourceTree = "<group>"; };
 		C988402D56DD41F8AB0DC92C /* SimpleIconCatalogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleIconCatalogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE65D6E511663B42A2D170E6 /* QuarantineReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineReason.swift; sourceTree = "<group>"; };
+		D3F0187398972328D1A8BB0D /* RecolorSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecolorSheetView.swift; sourceTree = "<group>"; };
 		D6EBB81FC78BE915CA7ECE9B /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		D8FC954894F857032E8473E7 /* IconItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconItem.swift; sourceTree = "<group>"; };
 		E5949A4EE7BF8D3939B9E285 /* IconGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGridView.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 				63522BB6A9B3A2EFCF640D3F /* IndexStore.swift */,
 				488951A71E5769CC54BB3C6D /* QuarantineClassifier.swift */,
 				28F61017A1F492FE5DC9FB66 /* SVGAnalyzer.swift */,
+				0C3E071877A93D1929983700 /* SVGRecolorer.swift */,
 				EB40218949E38E7AA4867293 /* ThumbnailCache.swift */,
 				95254BC605C7149AFD8DBF93 /* ThumbnailGenerator.swift */,
 			);
@@ -200,6 +205,7 @@
 				E5949A4EE7BF8D3939B9E285 /* IconGridView.swift */,
 				D6EBB81FC78BE915CA7ECE9B /* PreferencesView.swift */,
 				82B8F90270B88E345F958AFB /* QuarantineView.swift */,
+				D3F0187398972328D1A8BB0D /* RecolorSheetView.swift */,
 				0EF80762ABFB7344129C9FDB /* StatisticsView.swift */,
 			);
 			path = Views;
@@ -326,7 +332,9 @@
 				226C42DB51F1E4ACCDC88D83 /* QuarantineReason.swift in Sources */,
 				FF2CDCCB55FEB382C977B8DC /* QuarantineView.swift in Sources */,
 				F2A8E46372577C4580620DAE /* QuickLookHelper.swift in Sources */,
+				49FB97085993DFCE07603D51 /* RecolorSheetView.swift in Sources */,
 				96A4BA4D9529F730DDB952C7 /* SVGAnalyzer.swift in Sources */,
+				3D952AA052E047D32E861D1F /* SVGRecolorer.swift in Sources */,
 				9DB53E27CE5F928ED331156D /* SimpleIconCatalogApp.swift in Sources */,
 				EFAB39DE320A72EDF8A3DC08 /* StatisticsView.swift in Sources */,
 				F7B8E9830406C0A275F6B3D6 /* StatisticsViewModel.swift in Sources */,
@@ -452,7 +460,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.simpleiconcatalog.app;
 				PRODUCT_MODULE_NAME = IconViewer;
 				PRODUCT_NAME = "Simple Icon Catalog";
@@ -474,7 +482,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.simpleiconcatalog.app;
 				PRODUCT_MODULE_NAME = IconViewer;
 				PRODUCT_NAME = "Simple Icon Catalog";

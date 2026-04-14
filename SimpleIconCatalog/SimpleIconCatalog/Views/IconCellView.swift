@@ -73,6 +73,9 @@ struct IconCellView: View {
         .sheet(isPresented: $showDetail) {
             IconDetailView(item: item, cache: cache, viewModel: viewModel)
         }
+        .sheet(isPresented: $showRecolor) {
+            RecolorSheetView(item: item, cache: cache, onCopied: {})
+        }
         .sheet(isPresented: $showNewCollection) {
             let paths = pathsForNewCollection
             CollectionEditorView(title: "New Collection") { name, symbol, colorHex in
@@ -102,6 +105,7 @@ struct IconCellView: View {
     @State private var isHovering = false
     @State private var showDetail = false
     @State private var showNewCollection = false
+    @State private var showRecolor = false
     @State private var pathsForNewCollection: Set<String> = []
 
     private var isMultiSelected: Bool {
@@ -130,6 +134,10 @@ struct IconCellView: View {
         Button("Copy Image") {
             PasteboardHelper.copyIcon(item, cache: cache)
         }
+        Button("Copy Colored...") {
+            showRecolor = true
+        }
+        .disabled(!(item.fileExtension == "svg" && item.isMonochrome))
         Button("Show in Finder") {
             NSWorkspace.shared.activateFileViewerSelecting([item.fileURL])
         }

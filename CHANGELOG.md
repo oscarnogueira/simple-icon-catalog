@@ -2,6 +2,11 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.5.0] - 2026-04-14
+
+### Added
+- **Copy Colored** — right-click any monochrome SVG and choose a custom fill color before copying. The sheet shows a live preview over a selectable background color (so you can simulate your slide), with recent colors for quick reuse. Copies rasterize at 1024px, ready to paste into Keynote/PowerPoint. Shortcut: ⏎ to copy, Esc to cancel (closes the system color panel first if open).
+
 ## [1.4.0] - 2026-04-14
 
 ### Added
