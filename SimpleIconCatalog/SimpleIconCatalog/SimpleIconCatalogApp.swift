@@ -2,8 +2,13 @@ import SwiftUI
 
 @main
 struct SimpleIconCatalogApp: App {
-    @StateObject private var viewModel = IconCatalogViewModel()
+    @StateObject private var viewModel: IconCatalogViewModel
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
+
+    init() {
+        LegacyMigration.migrateIfNeeded()
+        _viewModel = StateObject(wrappedValue: IconCatalogViewModel())
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -44,7 +49,10 @@ struct SimpleIconCatalogApp: App {
                 cache: viewModel.cache,
                 sourceDirectories: viewModel.sourceDirectories,
                 lastIndexedAt: viewModel.lastIndexedAt,
-                lastIndexDuration: viewModel.lastIndexDuration
+                lastIndexDuration: viewModel.lastIndexDuration,
+                favoriteCount: viewModel.allIcons.filter { !$0.isQuarantined && viewModel.isFavorite($0) }.count,
+                collectionCount: viewModel.collections.count,
+                indexStore: viewModel.indexStore
             ))
         }
         .defaultSize(width: 400, height: 450)

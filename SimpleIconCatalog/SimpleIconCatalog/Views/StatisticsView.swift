@@ -29,8 +29,14 @@ struct StatisticsView: View {
                 }
             }
 
-            Section("Cache") {
-                LabeledContent("Size on disk", value: stats.cacheSize)
+            Section("Library") {
+                LabeledContent("Favorites", value: "\(stats.favoriteCount)")
+                LabeledContent("Collections", value: "\(stats.collectionCount)")
+            }
+
+            Section("Storage") {
+                LabeledContent("Thumbnail cache", value: stats.cacheSize)
+                LabeledContent("Database", value: stats.databaseSize)
             }
 
             Section("Last Indexation") {

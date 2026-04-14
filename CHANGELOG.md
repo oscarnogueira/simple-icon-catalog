@@ -2,6 +2,22 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.2.0] - 2026-04-14
+
+### Added
+- **Multi-select** — select multiple icons for bulk operations
+- `⌘+Click` to toggle individual icons into a selection
+- `⇧+Click` to select a range of icons
+- `⌘+A` to select all visible icons
+- Selection mode button in toolbar — enables checkboxes on each cell for tap-to-select
+- Right-click on multi-selection shows bulk context menu (favorites, collections)
+- Drag multiple selected icons to sidebar collections or external apps (Keynote, Finder, etc.)
+- Selection auto-clears after bulk actions, filter changes, or pressing `Esc`
+- Footer shows selection count when icons are selected
+- `MARKETING_VERSION` in project.yml — About view now shows correct app version
+- Last indexing date/duration now persisted across launches, updated after every incremental sync
+- Legacy bundle ID migration for caches and index database (handles historical `com.simpleicocatalog.app` typo and `IconViewer` paths)
+
 ## [1.1.1] - 2026-04-10
 
 ### Added

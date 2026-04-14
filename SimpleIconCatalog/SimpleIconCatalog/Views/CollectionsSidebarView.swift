@@ -4,6 +4,7 @@ struct CollectionsSidebarView: View {
     @ObservedObject var viewModel: IconCatalogViewModel
     @State private var showNewCollection = false
     @State private var editingCollection: IconCollection?
+    @State private var collectionToDelete: IconCollection?
 
     var body: some View {
         List(selection: $viewModel.selectedCollectionID) {
@@ -33,8 +34,14 @@ struct CollectionsSidebarView: View {
                                 viewModel.selectedCollectionID = collection.id
                             }
                             .dropDestination(for: URL.self) { urls, _ in
-                                for url in urls {
-                                    viewModel.addToCollection(iconPath: url.path, collectionID: collection.id)
+                                let droppedPaths = Set(urls.map(\.path))
+                                // If the dragged icon is part of a multi-selection, use all selected paths
+                                if !viewModel.selectedPaths.isEmpty && !viewModel.selectedPaths.isDisjoint(with: droppedPaths) {
+                                    viewModel.addToCollection(paths: viewModel.selectedPaths, collectionID: collection.id)
+                                } else {
+                                    for url in urls {
+                                        viewModel.addToCollection(iconPath: url.path, collectionID: collection.id)
+                                    }
                                 }
                                 return true
                             }
@@ -43,7 +50,11 @@ struct CollectionsSidebarView: View {
                                     editingCollection = collection
                                 }
                                 Button("Delete", role: .destructive) {
-                                    viewModel.deleteCollection(id: collection.id)
+                                    if viewModel.memberCount(for: collection.id) > 0 {
+                                        collectionToDelete = collection
+                                    } else {
+                                        viewModel.deleteCollection(id: collection.id)
+                                    }
                                 }
                             }
                     }
@@ -83,6 +94,26 @@ struct CollectionsSidebarView: View {
                 updated.colorHex = colorHex
                 viewModel.updateCollection(updated)
             }
+        }
+        .alert(
+            "Delete \"\(collectionToDelete?.name ?? "")\"?",
+            isPresented: Binding(
+                get: { collectionToDelete != nil },
+                set: { if !$0 { collectionToDelete = nil } }
+            )
+        ) {
+            Button("Cancel", role: .cancel) {
+                collectionToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                if let collection = collectionToDelete {
+                    viewModel.deleteCollection(id: collection.id)
+                    collectionToDelete = nil
+                }
+            }
+        } message: {
+            let count = viewModel.memberCount(for: collectionToDelete?.id ?? UUID())
+            Text("This collection contains \(count) icon\(count == 1 ? "" : "s"). The icons won't be deleted from disk.")
         }
     }
 

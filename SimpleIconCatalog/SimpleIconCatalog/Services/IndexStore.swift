@@ -25,7 +25,7 @@ final class IndexStore {
 
     private static func storeDirectory() -> URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.simpleicocatalog.app"
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.simpleiconcatalog.app"
         return appSupport.appendingPathComponent(bundleID)
     }
 
@@ -163,6 +163,26 @@ final class IndexStore {
         sqlite3_finalize(stmt)
     }
 
+    func setFavorite(paths: Set<String>, isFavorite: Bool) {
+        guard !paths.isEmpty else { return }
+        execute("BEGIN TRANSACTION;")
+        let sql = "UPDATE icons SET is_favorite = ? WHERE path = ?;"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+            execute("ROLLBACK;")
+            return
+        }
+        let val: Int32 = isFavorite ? 1 : 0
+        for path in paths {
+            sqlite3_reset(stmt)
+            sqlite3_bind_int(stmt, 1, val)
+            sqlite3_bind_text(stmt, 2, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_step(stmt)
+        }
+        sqlite3_finalize(stmt)
+        execute("COMMIT;")
+    }
+
     // MARK: - Collections
 
     func saveCollection(_ c: IconCollection) {
@@ -243,6 +263,46 @@ final class IndexStore {
         return paths
     }
 
+    func addIcons(paths: Set<String>, toCollection collectionID: UUID) {
+        guard !paths.isEmpty else { return }
+        execute("BEGIN TRANSACTION;")
+        let sql = "INSERT OR IGNORE INTO collection_members (collection_id, icon_path) VALUES (?, ?);"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+            execute("ROLLBACK;")
+            return
+        }
+        let idStr = collectionID.uuidString
+        for path in paths {
+            sqlite3_reset(stmt)
+            sqlite3_bind_text(stmt, 1, idStr, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(stmt, 2, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_step(stmt)
+        }
+        sqlite3_finalize(stmt)
+        execute("COMMIT;")
+    }
+
+    func removeIcons(paths: Set<String>, fromCollection collectionID: UUID) {
+        guard !paths.isEmpty else { return }
+        execute("BEGIN TRANSACTION;")
+        let sql = "DELETE FROM collection_members WHERE collection_id = ? AND icon_path = ?;"
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+            execute("ROLLBACK;")
+            return
+        }
+        let idStr = collectionID.uuidString
+        for path in paths {
+            sqlite3_reset(stmt)
+            sqlite3_bind_text(stmt, 1, idStr, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(stmt, 2, path, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_step(stmt)
+        }
+        sqlite3_finalize(stmt)
+        execute("COMMIT;")
+    }
+
     func loadAllMemberships() -> [UUID: Set<String>] {
         let sql = "SELECT collection_id, icon_path FROM collection_members;"
         var stmt: OpaquePointer?
@@ -270,6 +330,14 @@ final class IndexStore {
         guard sqlite3_prepare_v2(db, "SELECT COUNT(*) FROM icons;", -1, &stmt, nil) == SQLITE_OK else { return 0 }
         defer { sqlite3_finalize(stmt) }
         return sqlite3_step(stmt) == SQLITE_ROW ? Int(sqlite3_column_int(stmt, 0)) : 0
+    }
+
+    var databaseSize: Int64 {
+        let dir = IndexStore.storeDirectory()
+        let dbPath = dir.appendingPathComponent("index.db").path
+        guard let attrs = try? FileManager.default.attributesOfItem(atPath: dbPath),
+              let bytes = attrs[.size] as? Int64 else { return 0 }
+        return bytes
     }
 
     // MARK: - Helpers

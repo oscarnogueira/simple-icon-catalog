@@ -6,6 +6,9 @@ struct StatisticsViewModel {
     let sourceDirectories: [URL]
     let lastIndexedAt: Date?
     let lastIndexDuration: TimeInterval?
+    let favoriteCount: Int
+    let collectionCount: Int
+    let indexStore: IndexStore
 
     var totalActive: Int {
         allIcons.filter { !$0.isQuarantined }.count
@@ -58,5 +61,9 @@ struct StatisticsViewModel {
         guard let duration = lastIndexDuration else { return "—" }
         if duration < 1 { return "< 1s" }
         return String(format: "%.1fs", duration)
+    }
+
+    var databaseSize: String {
+        ByteCountFormatter.string(fromByteCount: indexStore.databaseSize, countStyle: .file)
     }
 }

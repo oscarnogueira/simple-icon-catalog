@@ -31,11 +31,30 @@ class IconCatalogViewModel: ObservableObject {
     @Published var focusSearch: Bool = false
     @Published var thumbnailSize: CGFloat = 64
     @Published var progress = IndexingProgress()
-    @Published var lastIndexedAt: Date?
-    @Published var lastIndexDuration: TimeInterval?
+    @Published var lastIndexedAt: Date? {
+        didSet {
+            if let lastIndexedAt {
+                UserDefaults.standard.set(lastIndexedAt, forKey: "lastIndexedAt")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lastIndexedAt")
+            }
+        }
+    }
+    @Published var lastIndexDuration: TimeInterval? {
+        didSet {
+            if let lastIndexDuration {
+                UserDefaults.standard.set(lastIndexDuration, forKey: "lastIndexDuration")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lastIndexDuration")
+            }
+        }
+    }
     @Published var collections: [IconCollection] = []
     @Published var selectedCollectionID: UUID? = nil
     @Published var collectionMemberships: [UUID: Set<String>] = [:]
+    @Published var selectedPaths: Set<String> = []
+    @Published var isSelectionMode: Bool = false
+    var lastSelectedPath: String?
 
     @AppStorage("sourceDirectories") private var sourceDirectoriesData: Data = Data()
 
@@ -48,6 +67,10 @@ class IconCatalogViewModel: ObservableObject {
 
     func isFavorite(_ item: IconItem) -> Bool {
         _favoritePaths.contains(item.fileURL.path)
+    }
+
+    func _isFavoritePath(_ path: String) -> Bool {
+        _favoritePaths.contains(path)
     }
 
     func toggleFavorite(_ item: IconItem) {
@@ -133,9 +156,21 @@ class IconCatalogViewModel: ObservableObject {
         }
     }
 
+    private var filterObservers: Set<AnyCancellable> = []
+
     init(cache: ThumbnailCache = ThumbnailCache()) {
         self.cache = cache
         self.indexer = IconIndexer(cache: cache)
+        self.lastIndexedAt = UserDefaults.standard.object(forKey: "lastIndexedAt") as? Date
+        self.lastIndexDuration = UserDefaults.standard.object(forKey: "lastIndexDuration") as? TimeInterval
+        observeFilterChanges()
+    }
+
+    private func observeFilterChanges() {
+        $searchText.dropFirst().sink { [weak self] _ in self?.clearSelection() }.store(in: &filterObservers)
+        $styleFilter.dropFirst().sink { [weak self] _ in self?.clearSelection() }.store(in: &filterObservers)
+        $formatFilter.dropFirst().sink { [weak self] _ in self?.clearSelection() }.store(in: &filterObservers)
+        $selectedCollectionID.dropFirst().sink { [weak self] _ in self?.clearSelection() }.store(in: &filterObservers)
     }
 
     /// Called on app launch. Loads persisted index instantly, then runs incremental sync.
@@ -209,6 +244,118 @@ class IconCatalogViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Multi-Select
+
+    func toggleSelection(_ item: IconItem) {
+        let path = item.fileURL.path
+        if selectedPaths.contains(path) {
+            selectedPaths.remove(path)
+        } else {
+            selectedPaths.insert(path)
+        }
+        lastSelectedPath = path
+        syncSelectedIcon()
+    }
+
+    func selectRange(to item: IconItem) {
+        let icons = filteredIcons
+        guard let anchorPath = lastSelectedPath,
+              let anchorIndex = icons.firstIndex(where: { $0.fileURL.path == anchorPath }),
+              let targetIndex = icons.firstIndex(where: { $0.id == item.id }) else {
+            toggleSelection(item)
+            return
+        }
+        let range = min(anchorIndex, targetIndex)...max(anchorIndex, targetIndex)
+        for i in range {
+            selectedPaths.insert(icons[i].fileURL.path)
+        }
+        syncSelectedIcon()
+    }
+
+    func selectAll() {
+        for icon in filteredIcons {
+            selectedPaths.insert(icon.fileURL.path)
+        }
+        syncSelectedIcon()
+    }
+
+    func clearSelection() {
+        selectedPaths.removeAll()
+        isSelectionMode = false
+        lastSelectedPath = nil
+        selectedIcon = nil
+    }
+
+    func handleClick(_ item: IconItem, commandDown: Bool, shiftDown: Bool) {
+        if shiftDown {
+            selectRange(to: item)
+        } else if commandDown {
+            if selectedPaths.isEmpty, let current = selectedIcon {
+                selectedPaths.insert(current.fileURL.path)
+            }
+            toggleSelection(item)
+        } else if isSelectionMode {
+            toggleSelection(item)
+        } else {
+            selectedPaths.removeAll()
+            lastSelectedPath = item.fileURL.path
+            selectedIcon = item
+        }
+    }
+
+    var hasMultiSelection: Bool {
+        selectedPaths.count > 1
+    }
+
+    var selectionCount: String {
+        "\(selectedPaths.count) selected"
+    }
+
+    func toggleFavorites(for paths: Set<String>) {
+        let allAreFavorites = paths.allSatisfy { _favoritePaths.contains($0) }
+        if allAreFavorites {
+            for path in paths {
+                _favoritePaths.remove(path)
+            }
+            indexStore.setFavorite(paths: paths, isFavorite: false)
+        } else {
+            for path in paths {
+                _favoritePaths.insert(path)
+            }
+            indexStore.setFavorite(paths: paths, isFavorite: true)
+        }
+        objectWillChange.send()
+        clearSelection()
+    }
+
+    func addToCollection(paths: Set<String>, collectionID: UUID) {
+        indexStore.addIcons(paths: paths, toCollection: collectionID)
+        for path in paths {
+            collectionMemberships[collectionID, default: []].insert(path)
+        }
+        clearSelection()
+    }
+
+    func removeFromCollection(paths: Set<String>, collectionID: UUID) {
+        indexStore.removeIcons(paths: paths, fromCollection: collectionID)
+        for path in paths {
+            collectionMemberships[collectionID]?.remove(path)
+        }
+        clearSelection()
+    }
+
+    func isPathSelected(_ path: String) -> Bool {
+        selectedPaths.contains(path)
+    }
+
+    private func syncSelectedIcon() {
+        if selectedPaths.count == 1, let path = selectedPaths.first {
+            selectedIcon = allIcons.first { $0.fileURL.path == path }
+        } else if selectedPaths.count > 1 {
+            selectedIcon = nil
+        }
+    }
+
     // MARK: - Collections
 
     func createCollection(name: String, symbol: String, colorHex: String) {
@@ -275,12 +422,19 @@ class IconCatalogViewModel: ObservableObject {
     private func incrementalReindex() async {
         guard !sourceDirectories.isEmpty else { return }
 
+        let startTime = Date()
         let delta = await indexer.incrementalIndex(
             directories: sourceDirectories,
             existing: allIcons
         )
+        defer {
+            lastIndexedAt = Date()
+            lastIndexDuration = Date().timeIntervalSince(startTime)
+        }
 
         if !delta.removed.isEmpty {
+            let removedPaths = Set(allIcons.filter { delta.removed.contains($0.id) }.map { $0.fileURL.path })
+            selectedPaths.subtract(removedPaths)
             allIcons.removeAll { delta.removed.contains($0.id) }
         }
         for item in delta.modified {
