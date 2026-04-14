@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/screenshots/app-icon.png" alt="Simple Icon Catalog icon" width="128" height="128">
+</p>
+
 # Simple Icon Catalog
 
 A lightweight native macOS app for browsing, filtering, and copying icons from your local SVG and PNG collections.
