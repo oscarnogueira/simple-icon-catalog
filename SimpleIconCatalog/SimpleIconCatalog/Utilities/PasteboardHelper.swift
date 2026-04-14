@@ -15,4 +15,20 @@ struct PasteboardHelper {
             pasteboard.writeObjects([cached])
         }
     }
+
+    /// Copies a monochrome SVG to the clipboard after rewriting every fill/stroke to
+    /// the requested color and rasterizing at the given longest-side size.
+    /// Non-SVG or non-monochrome icons are copied via the normal `copyIcon` path.
+    @discardableResult
+    static func copyRecoloredIcon(_ item: IconItem, color: NSColor, cache: ThumbnailCache) -> Bool {
+        guard item.fileExtension == "svg", item.isMonochrome,
+              let image = SVGRecolorer.recoloredImage(from: item.fileURL, color: color) else {
+            copyIcon(item, cache: cache)
+            return false
+        }
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects([image])
+        return true
+    }
 }
