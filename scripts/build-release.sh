@@ -17,8 +17,9 @@ set -euo pipefail
 VERSION="${VERSION:-1.0.0}"
 APP_NAME="Simple Icon Catalog"
 SCHEME="SimpleIconCatalog"
-PROJECT_DIR="$(cd "$(dirname "$0")/../SimpleIconCatalog" && pwd)"
-BUILD_DIR="$(cd "$(dirname "$0")/.." && pwd)/build"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_DIR="$REPO_ROOT/SimpleIconCatalog"
+BUILD_DIR="$REPO_ROOT/build"
 ARCHIVE_PATH="$BUILD_DIR/$SCHEME.xcarchive"
 APP_PATH="$BUILD_DIR/$APP_NAME.app"
 DMG_PATH="$BUILD_DIR/SimpleIconCatalog-$VERSION.dmg"
@@ -161,7 +162,6 @@ if [[ "${1:-}" == "--release" ]]; then
   fi
 
   # Extract release notes from CHANGELOG.md for this version
-  REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
   CHANGELOG="$REPO_ROOT/CHANGELOG.md"
   RELEASE_NOTES=""
   if [ -f "$CHANGELOG" ]; then
