@@ -2,6 +2,11 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.4.0] - 2026-04-14
+
+### Added
+- **Duplicate detection** — new Duplicates window (`⌘D`) groups icons that share the same content hash, shows reclaimable space per group, and lets you Reveal in Finder or Move to Trash each copy individually. When a copy is trashed, its favorite status and collection memberships migrate to the surviving copies automatically.
+
 ## [1.3.0] - 2026-04-14
 
 ### Added

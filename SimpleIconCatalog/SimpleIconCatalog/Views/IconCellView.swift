@@ -12,9 +12,7 @@ struct IconCellView: View {
         VStack(spacing: 6) {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(colorScheme == .dark
-                          ? Color.white.opacity(0.22)
-                          : Color.black.opacity(0.03))
+                    .fill(Color(white: 0.88))
                     .shadow(color: .black.opacity(0.15), radius: 3, y: 1)
 
                 iconView
@@ -236,7 +234,7 @@ struct IconCellView: View {
             thumbnailImage
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(colorScheme == .dark ? .white : .black)
+                .foregroundStyle(.black)
         } else {
             thumbnailImage
                 .resizable()

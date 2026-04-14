@@ -31,6 +31,9 @@ struct SimpleIconCatalogApp: App {
 
                 OpenWindowButton(id: "quarantine", label: "Quarantine...")
                     .keyboardShortcut("q", modifiers: [.command, .shift])
+
+                OpenWindowButton(id: "duplicates", label: "Duplicates...")
+                    .keyboardShortcut("d", modifiers: [.command])
             }
             CommandGroup(after: .textEditing) {
                 Button("Find Icons") {
@@ -62,6 +65,11 @@ struct SimpleIconCatalogApp: App {
             QuarantineView(viewModel: viewModel)
         }
         .defaultSize(width: 500, height: 400)
+
+        Window("Duplicates", id: "duplicates") {
+            DuplicatesView(viewModel: viewModel)
+        }
+        .defaultSize(width: 720, height: 520)
 
         Window("About Simple Icon Catalog", id: "about") {
             AboutView()

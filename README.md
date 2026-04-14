@@ -33,6 +33,7 @@ Simple Icon Catalog solves this. Point it at your icon directories and get an in
 - **Quick Look** — Click an icon to select it, press `Space` for native macOS Quick Look preview
 - **Auto-indexing** — Watches your directories for changes, updates incrementally (no manual refresh needed)
 - **Smart quarantine** — Automatically hides files that don't look like icons (too large, too small, bad aspect ratio) — review and restore them in a dedicated view with preview panel
+- **Duplicate detection** — Dedicated Duplicates window (`⌘D`) groups byte-identical copies so you can reclaim disk space. Move unwanted copies to Trash one at a time; favorite status and collection memberships migrate automatically to the survivors
 - **Dark mode** — Fully adapts to macOS light and dark themes; monochrome icons auto-adjust for visibility. Or choose Light/Dark manually in Settings
 - **Detail view** — Right-click > Details to see format, dimensions, file size, path, and style
 - **Statistics** — Overview of your catalog: icon counts, format breakdown, cache size, last index date and duration (persists across launches)
@@ -85,6 +86,7 @@ On first launch, open **Settings** (gear icon in the bottom-left corner or `⌘,
 | `⌘+Click` | Toggle a single icon in the selection |
 | `⇧+Click` | Select a range |
 | `⌘I` | Open Statistics |
+| `⌘D` | Open Duplicates |
 | `⌘⇧Q` | Open Quarantine |
 | `⌘,` | Open Settings |
 
@@ -111,14 +113,15 @@ Or open **Console.app** and filter by the subsystem to inspect launch events, in
 
 ```
 SimpleIconCatalog/
-├── Models/          → IconItem, IconCollection, QuarantineReason, IndexingProgress
+├── Models/          → IconItem, IconCollection, DuplicateGroup,
+│                      QuarantineReason, IndexingProgress
 ├── Services/        → DirectoryScanner, SVGAnalyzer, QuarantineClassifier,
 │                      ThumbnailCache, ThumbnailGenerator, IconIndexer,
 │                      DirectoryWatcher, IndexStore
 ├── ViewModels/      → IconCatalogViewModel, StatisticsViewModel
 ├── Views/           → ContentView, IconGridView, IconCellView, IconDetailView,
-│                      CollectionsSidebarView, PreferencesView, QuarantineView,
-│                      StatisticsView, AboutView
+│                      CollectionsSidebarView, DuplicatesView, PreferencesView,
+│                      QuarantineView, StatisticsView, AboutView
 └── Utilities/       → PasteboardHelper, AppLog, LegacyMigration
 ```
 

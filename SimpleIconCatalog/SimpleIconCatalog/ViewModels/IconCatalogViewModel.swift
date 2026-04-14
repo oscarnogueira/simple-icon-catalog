@@ -254,6 +254,69 @@ class IconCatalogViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Duplicates
+
+    /// Groups of non-quarantined icons sharing the same content hash, sorted by most bytes reclaimable.
+    var duplicateGroups: [DuplicateGroup] {
+        Dictionary(grouping: allIcons.filter { !$0.isQuarantined }, by: \.contentHash)
+            .filter { $0.value.count > 1 }
+            .map { hash, items in
+                DuplicateGroup(
+                    id: hash,
+                    icons: items.sorted { $0.fileURL.path < $1.fileURL.path }
+                )
+            }
+            .sorted { $0.wastedBytes > $1.wastedBytes }
+    }
+
+    /// Moves a duplicate to the trash, migrates its favorite/collection memberships to the surviving copies,
+    /// and updates DB + in-memory state.
+    func deleteDuplicate(_ item: IconItem, in group: DuplicateGroup) {
+        let path = item.fileURL.path
+        let survivors = group.icons.filter { $0.id != item.id }
+        guard !survivors.isEmpty else {
+            AppLog.store.error("Refusing to delete last copy of \(path, privacy: .public)")
+            return
+        }
+
+        // Migrate favorite status
+        if _favoritePaths.contains(path) {
+            for s in survivors where !_favoritePaths.contains(s.fileURL.path) {
+                let sPath = s.fileURL.path
+                _favoritePaths.insert(sPath)
+                indexStore.setFavorite(path: sPath, isFavorite: true)
+            }
+        }
+
+        // Migrate collection memberships
+        let survivorPaths = Set(survivors.map { $0.fileURL.path })
+        for (collectionID, members) in collectionMemberships where members.contains(path) {
+            if members.intersection(survivorPaths).isEmpty, let firstSurvivor = survivors.first {
+                let sPath = firstSurvivor.fileURL.path
+                collectionMemberships[collectionID, default: []].insert(sPath)
+                indexStore.addIcon(path: sPath, toCollection: collectionID)
+            }
+            collectionMemberships[collectionID]?.remove(path)
+            indexStore.removeIcon(path: path, fromCollection: collectionID)
+        }
+
+        // Move file to Trash (reversible)
+        do {
+            try FileManager.default.trashItem(at: item.fileURL, resultingItemURL: nil)
+            AppLog.store.notice("Trashed duplicate \(path, privacy: .public)")
+        } catch {
+            AppLog.store.error("Failed to trash \(path, privacy: .public): \(error.localizedDescription, privacy: .public)")
+            return
+        }
+
+        // Remove from in-memory state + DB
+        _favoritePaths.remove(path)
+        selectedPaths.remove(path)
+        allIcons.removeAll { $0.id == item.id }
+        indexStore.deleteIcon(path: path)
+        objectWillChange.send()
+    }
+
     // MARK: - Multi-Select
 
     func toggleSelection(_ item: IconItem) {
