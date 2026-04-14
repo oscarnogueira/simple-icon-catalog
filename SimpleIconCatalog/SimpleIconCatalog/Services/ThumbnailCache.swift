@@ -9,7 +9,7 @@ struct ThumbnailCache {
             self.cacheDirectory = dir
         } else {
             let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-            let bundleID = Bundle.main.bundleIdentifier ?? "com.simpleicocatalog.app"
+            let bundleID = Bundle.main.bundleIdentifier ?? "com.simpleiconcatalog.app"
             self.cacheDirectory = caches.appendingPathComponent(bundleID)
         }
         try? FileManager.default.createDirectory(at: self.cacheDirectory,

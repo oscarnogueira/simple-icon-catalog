@@ -3,6 +3,7 @@ import SwiftUI
 struct IconDetailView: View {
     let item: IconItem
     let cache: ThumbnailCache
+    @ObservedObject var viewModel: IconCatalogViewModel
     @Environment(\.dismiss) private var dismiss
 
     @Environment(\.colorScheme) private var colorScheme
@@ -69,6 +70,25 @@ struct IconDetailView: View {
                         GridRow {
                             detailLabel("Directory")
                             detailValue(item.fileURL.deletingLastPathComponent().path)
+                        }
+                        if !collections.isEmpty {
+                            GridRow {
+                                detailLabel("Collections")
+                                HStack(spacing: 4) {
+                                    ForEach(collections) { collection in
+                                        HStack(spacing: 2) {
+                                            Image(systemName: collection.symbol)
+                                                .font(.system(size: 9))
+                                                .foregroundStyle(collection.color)
+                                            Text(collection.name)
+                                                .font(.caption)
+                                        }
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(collection.color.opacity(0.1), in: Capsule())
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -140,6 +160,10 @@ struct IconDetailView: View {
             .textSelection(.enabled)
             .lineLimit(1)
             .truncationMode(.middle)
+    }
+
+    private var collections: [IconCollection] {
+        viewModel.collectionsContaining(iconPath: item.fileURL.path)
     }
 
     private var preview: Image {

@@ -14,7 +14,7 @@ struct ContentView: View {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                TextField("Filter (/ or ⌘F)", text: $viewModel.searchText)
+                TextField("Filter (/ or \u{2318}F)", text: $viewModel.searchText)
                     .textFieldStyle(.plain)
                     .focused($isSearchFocused)
                 if !viewModel.searchText.isEmpty {
@@ -53,6 +53,14 @@ struct ContentView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
+                if !viewModel.selectedPaths.isEmpty {
+                    Text("·")
+                        .foregroundStyle(.tertiary)
+                    Text(viewModel.selectionCount)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
                 Spacer()
 
                 if viewModel.progress.isIndexing {
@@ -70,6 +78,18 @@ struct ContentView: View {
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 HStack(spacing: 12) {
+                    // Selection mode toggle
+                    Button {
+                        if viewModel.isSelectionMode {
+                            viewModel.clearSelection()
+                        } else {
+                            viewModel.isSelectionMode = true
+                        }
+                    } label: {
+                        Image(systemName: viewModel.isSelectionMode ? "checkmark.circle.fill" : "checkmark.circle")
+                    }
+                    .help(viewModel.isSelectionMode ? "Exit Selection Mode" : "Selection Mode")
+
                     // Style filter
                     Picker("", selection: $viewModel.styleFilter) {
                         ForEach(StyleFilter.allCases, id: \.self) { filter in
@@ -162,6 +182,10 @@ struct ContentView: View {
             return .ignored
         }
         .onKeyPress(.escape) {
+            if !viewModel.selectedPaths.isEmpty || viewModel.isSelectionMode {
+                viewModel.clearSelection()
+                return .handled
+            }
             if !viewModel.searchText.isEmpty {
                 viewModel.searchText = ""
                 return .handled
@@ -171,6 +195,12 @@ struct ContentView: View {
                 return .handled
             }
             return .ignored
+        }
+        .background {
+            // Cmd+A: Select all
+            Button("") { viewModel.selectAll() }
+                .keyboardShortcut("a", modifiers: .command)
+                .hidden()
         }
     }
 
