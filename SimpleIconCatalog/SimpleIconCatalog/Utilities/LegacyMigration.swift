@@ -13,15 +13,15 @@ enum LegacyMigration {
         // Migrate caches
         let cachesDir = fm.urls(for: .cachesDirectory, in: .userDomainMask).first!
         let currentCacheDir = cachesDir.appendingPathComponent(currentID)
-        migrateDirectory(from: legacyIdentifiers, base: cachesDir, to: currentCacheDir, fm: fm)
+        migrateDirectory(label: "cache", from: legacyIdentifiers, base: cachesDir, to: currentCacheDir, fm: fm)
 
         // Migrate application support (database)
         let appSupportDir = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let currentAppSupportDir = appSupportDir.appendingPathComponent(currentID)
-        migrateDirectory(from: legacyIdentifiers, base: appSupportDir, to: currentAppSupportDir, fm: fm)
+        migrateDirectory(label: "appSupport", from: legacyIdentifiers, base: appSupportDir, to: currentAppSupportDir, fm: fm)
     }
 
-    private static func migrateDirectory(from legacyIDs: [String], base: URL, to destination: URL, fm: FileManager) {
+    private static func migrateDirectory(label: String, from legacyIDs: [String], base: URL, to destination: URL, fm: FileManager) {
         // If destination already has files, skip migration
         if fm.fileExists(atPath: destination.path),
            let contents = try? fm.contentsOfDirectory(atPath: destination.path),
@@ -51,6 +51,7 @@ enum LegacyMigration {
                     try fm.removeItem(at: destination)
                 }
                 try fm.moveItem(at: legacyDir, to: destination)
+                AppLog.migration.notice("Migrated \(label, privacy: .public) from \(id, privacy: .public) (\(contents.count) items)")
             } catch {
                 // Fallback: copy files individually
                 try? fm.createDirectory(at: destination, withIntermediateDirectories: true)
@@ -60,6 +61,7 @@ enum LegacyMigration {
                     try? fm.moveItem(at: src, to: dst)
                 }
                 try? removeDirIfEmpty(legacyDir, fm: fm)
+                AppLog.migration.error("Migrated \(label, privacy: .public) from \(id, privacy: .public) via fallback: \(error.localizedDescription, privacy: .public)")
             }
             break
         }

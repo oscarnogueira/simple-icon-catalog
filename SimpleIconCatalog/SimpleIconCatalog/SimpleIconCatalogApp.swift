@@ -6,6 +6,7 @@ struct SimpleIconCatalogApp: App {
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
 
     init() {
+        AppLog.app.notice("App launching — version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?", privacy: .public)")
         LegacyMigration.migrateIfNeeded()
         _viewModel = StateObject(wrappedValue: IconCatalogViewModel())
     }

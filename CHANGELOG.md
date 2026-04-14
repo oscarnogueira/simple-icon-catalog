@@ -2,6 +2,13 @@
 
 All notable changes to Simple Icon Catalog will be documented in this file.
 
+## [1.3.0] - 2026-04-14
+
+### Added
+- Unified logging via `os.Logger` — subsystem = bundle id, categories: `app`, `indexing`, `watcher`, `store`, `migration`
+- Launch, legacy migration, index load, full/incremental reindex (with delta counts and duration), and directory watch events are now logged
+- View live logs in **Console.app** (filter by subsystem `com.simpleiconcatalog.app`) or via `log stream --predicate 'subsystem == "com.simpleiconcatalog.app"'`
+
 ## [1.2.0] - 2026-04-14
 
 ### Added

@@ -35,6 +35,7 @@
 		97FDF6D2259557913345B3C0 /* IndexingProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04DB44D924BBB0C65D23CD5 /* IndexingProgress.swift */; };
 		9B32D8810A0B7F23D3359CD3 /* ThumbnailCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025C267D6C2E57ECEB61D288 /* ThumbnailCacheTests.swift */; };
 		9DB53E27CE5F928ED331156D /* SimpleIconCatalogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21079D5F8E9D08C0ED5875A4 /* SimpleIconCatalogApp.swift */; };
+		9FBF0BCA46AA184FDB6E2070 /* AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F48D4B61D6C78BA7C4D190 /* AppLog.swift */; };
 		CBE7F0B89A719E5EF21C8D0A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7067689817147C7A006126 /* AboutView.swift */; };
 		D738678386ECCACFEFD9E305 /* IconCatalogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80CB385102FD9C88FCD905 /* IconCatalogViewModelTests.swift */; };
 		EC230BD3FC937DD555E96449 /* QuarantineClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B75D537E1895E4DAF88699A /* QuarantineClassifierTests.swift */; };
@@ -63,6 +64,7 @@
 		14756CB3DDCC124539CFC88D /* IconCatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCatalogViewModel.swift; sourceTree = "<group>"; };
 		1765117400E2BC99D4D29D6E /* IconCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCellView.swift; sourceTree = "<group>"; };
 		21079D5F8E9D08C0ED5875A4 /* SimpleIconCatalogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIconCatalogApp.swift; sourceTree = "<group>"; };
+		28F48D4B61D6C78BA7C4D190 /* AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLog.swift; sourceTree = "<group>"; };
 		28F61017A1F492FE5DC9FB66 /* SVGAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAnalyzer.swift; sourceTree = "<group>"; };
 		2A09048E2427A2FD93244660 /* CollectionsSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsSidebarView.swift; sourceTree = "<group>"; };
 		2B75D537E1895E4DAF88699A /* QuarantineClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarantineClassifierTests.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 		29016955BE3231D076224346 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				28F48D4B61D6C78BA7C4D190 /* AppLog.swift */,
 				81A313FD6FCD7B4D91DC7794 /* ColorHex.swift */,
 				F4D87A06F1F29968839B083A /* LegacyMigration.swift */,
 				73A53CE0D1736C830C557B6C /* PasteboardHelper.swift */,
@@ -292,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBE7F0B89A719E5EF21C8D0A /* AboutView.swift in Sources */,
+				9FBF0BCA46AA184FDB6E2070 /* AppLog.swift in Sources */,
 				7A6E44842BD4782D82B6826C /* CollectionEditorView.swift in Sources */,
 				3C48F6ED111E588EF682EB11 /* CollectionsSidebarView.swift in Sources */,
 				2BD85C10630AD1C0D43809F5 /* ColorHex.swift in Sources */,
@@ -440,7 +444,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.simpleiconcatalog.app;
 				PRODUCT_MODULE_NAME = IconViewer;
 				PRODUCT_NAME = "Simple Icon Catalog";
@@ -462,7 +466,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.simpleiconcatalog.app;
 				PRODUCT_MODULE_NAME = IconViewer;
 				PRODUCT_NAME = "Simple Icon Catalog";

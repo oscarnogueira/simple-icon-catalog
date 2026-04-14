@@ -178,13 +178,20 @@ class IconCatalogViewModel: ObservableObject {
         // Load collections regardless of directories
         collections = indexStore.loadCollections()
         collectionMemberships = indexStore.loadAllMemberships()
+        AppLog.store.notice("Loaded \(self.collections.count) collections, \(self.collectionMemberships.values.reduce(0) { $0 + $1.count }) memberships")
 
-        guard !sourceDirectories.isEmpty else { return }
+        guard !sourceDirectories.isEmpty else {
+            AppLog.app.notice("No source directories configured")
+            return
+        }
 
         // Load persisted index from SQLite (instant UI)
         if let saved = indexStore.loadAll() {
             allIcons = saved.icons
             _favoritePaths = saved.favorites
+            AppLog.store.notice("Loaded \(saved.icons.count) icons, \(saved.favorites.count) favorites from DB")
+        } else {
+            AppLog.store.error("Failed to load index from DB")
         }
 
         // Then run incremental sync in background
@@ -201,6 +208,7 @@ class IconCatalogViewModel: ObservableObject {
         progress = IndexingProgress(isIndexing: true)
         allIcons = []
         let startTime = Date()
+        AppLog.indexing.notice("Full reindex started across \(self.sourceDirectories.count) directories")
 
         Task { [weak self] in
             guard let self else { return }
@@ -216,8 +224,10 @@ class IconCatalogViewModel: ObservableObject {
                 progress.processedFiles = count
             }
             progress.isIndexing = false
+            let duration = Date().timeIntervalSince(startTime)
             lastIndexedAt = Date()
-            lastIndexDuration = Date().timeIntervalSince(startTime)
+            lastIndexDuration = duration
+            AppLog.indexing.notice("Full reindex complete: \(count) icons in \(duration, format: .fixed(precision: 2))s")
             persistIndex()
         }
     }
@@ -428,8 +438,10 @@ class IconCatalogViewModel: ObservableObject {
             existing: allIcons
         )
         defer {
+            let duration = Date().timeIntervalSince(startTime)
             lastIndexedAt = Date()
-            lastIndexDuration = Date().timeIntervalSince(startTime)
+            lastIndexDuration = duration
+            AppLog.indexing.notice("Incremental reindex: +\(delta.added.count) ~\(delta.modified.count) -\(delta.removed.count) in \(duration, format: .fixed(precision: 2))s")
         }
 
         if !delta.removed.isEmpty {
